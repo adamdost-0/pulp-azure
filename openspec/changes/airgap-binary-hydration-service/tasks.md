@@ -1,61 +1,26 @@
-## 1. Discovery and Gap Closure
+## 1. Phase 0 - MVP Contract and Local Capability Proof
 
-- [ ] 1.1 Confirm first-scope distributions, repository families, architectures, channels, entitlement requirements, and redistribution constraints for Ubuntu, Red Hat, and any additional Linux sources.
-- [ ] 1.2 Confirm Azure Commercial and Azure Government Secret service availability, region support, approved SKUs, endpoint suffixes, and parity gaps for Container Apps, Storage, ACR, Key Vault, diagnostics, private endpoints, and managed identity.
-- [ ] 1.3 Define cross-domain approval, malware scanning, media custody, signing authority, and audit evidence requirements for manual hard-drive transfer.
-- [ ] 1.4 Establish maximum repository sizes, hydration intervals, transfer media capacity, and batch splitting rules.
-- [ ] 1.5 Select and pin compatible Pulp versions, plugins, import/export formats, and schema compatibility rules for both low-side and high-side deployments.
+- [ ] 1.1 Align OpenSpec scope and non-goals with GitHub issue #1: Ubuntu public APT/deb only, ACR for containers, and deferred Red Hat/RPM/SUSE/Debian/OCI-in-Pulp/CDS/client-configuration work.
+- [ ] 1.2 Align compliance and control boundaries with GitHub issue #2: app-owned checksum/package verification, state tracking, private access, audit events, and externally owned malware scanning/CDS transfer.
+- [ ] 1.3 Align transfer contract with GitHub issue #3: JSON batch manifest, per-repository entries, checksums only, whole-batch rejection on checksum failure, and compatibility warning with privileged override.
+- [ ] 1.4 Align state and authority model with GitHub issue #4: PostgreSQL-compatible state, strong lifecycle transitions, append-only audit history, and high-side-authoritative state after transfer.
+- [ ] 1.5 Align publication contract with GitHub issue #5: internal HTTPS APT endpoints, internal PKI, stable channel URLs, immutable snapshot URLs, test/prod/snapshot channels, and no client auth beyond network isolation.
+- [ ] 1.6 Define the local Pulp capability test harness from GitHub issue #6: pinned Pulp 3.x and `pulp_deb`, offline Ubuntu-style APT fixture, local low/high Pulp stacks, bundle staging, manifest validation, publication, and apt client consumption.
+- [ ] 1.7 Define Phase 1 Definition of Ready from GitHub issue #7: Azure service/SKU parity, selected Pulp/PostgreSQL/image-mirroring methods, local harness pass, required controls, and Phase 1 milestone criteria.
 
-## 2. Azure Deployment Foundation
+## 2. Phase 1 - Azure/Pulp Platform Foundation
 
-- [ ] 2.1 Create shared IaC modules for low-side and high-side Azure deployments with environment-specific bindings for cloud endpoints, private DNS, identities, storage, ACR, Key Vault, diagnostics, and tags.
-- [ ] 2.2 Configure private networking, disabled public access, TLS 1.2 or higher, CMK-capable storage, diagnostic settings, and narrow managed-identity RBAC for all supported Azure resources.
-- [ ] 2.3 Define Azure Container Apps workloads for the service layer, Pulp components, background workers, and supporting processes required by the selected Pulp deployment shape.
-- [ ] 2.4 Add high-side deployment validation that fails on public endpoints, public registries, mutable image references, missing private DNS, or unsupported Azure service bindings.
+- [ ] 2.1 Align Azure platform foundation with GitHub issue #8: Container Apps, ACR, Storage, PostgreSQL-compatible DB, Key Vault, diagnostics, private networking, CMK, tags, managed identity, and least-privilege RBAC.
+- [ ] 2.2 Align Pulp runtime and Container Apps topology with GitHub issue #9: Pulp API, workers, content serving, scheduled jobs, identical Pulp 3.x/`pulp_deb` versions, no `pulp_container`, health checks, scaling, and failure behavior.
+- [ ] 2.3 Align PostgreSQL state foundation with GitHub issue #10: private access, CMK, backups, restore path, diagnostics, access controls, schema migration, and strongly consistent state transitions.
+- [ ] 2.4 Align image mirroring and ACR supply chain with GitHub issue #11: OCI tarball transfer, high-side ACR import, production image BOM, tag-plus-digest references, and deployment validation.
+- [ ] 2.5 Align private networking and DNS validation with GitHub issue #12: private endpoints, private DNS, no public internet/DNS/registry/service endpoint dependencies, and validation failure on public references.
+- [ ] 2.6 Align diagnostics and operational baseline with GitHub issue #13: logs, metrics, audit events, private diagnostics access, retention, backup/restore tests, and private/local export fallback.
+- [ ] 2.7 Align platform milestone test with GitHub issue #14: low-side and high-side private startup, Pulp/PostgreSQL/storage/Key Vault/diagnostics health, and no high-side public runtime dependencies.
 
-## 3. Image and Dependency Mirroring
+## 3. Later Roadmap Milestones
 
-- [ ] 3.1 Produce a release bill of materials covering service images, Pulp images, support images, IaC dependencies, package manager dependencies, and operational tools.
-- [ ] 3.2 Implement digest-pinned image publishing and mirroring into low-side and high-side Azure Container Registry.
-- [ ] 3.3 Update deployment configuration so high-side Container Apps pull every image from private high-side ACR by digest.
-- [ ] 3.4 Add offline dependency packaging guidance for any build, deployment, or operational artifact needed inside Azure Government Secret.
-
-## 4. Repository Hydration Orchestration
-
-- [ ] 4.1 Implement repository source configuration for distribution, repository family, architecture, component/channel, sync interval, entitlement reference, and enabled status.
-- [ ] 4.2 Implement Key Vault-backed entitlement resolution without storing or logging secrets in application configuration.
-- [ ] 4.3 Implement scheduled hydration jobs that invoke Pulp sync tasks for enabled sources and record hydration run identifiers.
-- [ ] 4.4 Implement sync result handling that records failures, detects no-change runs, and creates transfer-eligible immutable snapshot records only after successful content changes.
-- [ ] 4.5 Add policy checks that prevent already-batched or failed snapshots from becoming transfer eligible.
-
-## 5. Snapshot and Transfer State
-
-- [ ] 5.1 Implement the state model for repository sources, hydration runs, snapshots, transfer batches, export jobs, media handoff states, high-side imports, publications, supersession, and audit events.
-- [ ] 5.2 Implement deterministic snapshot and transfer batch identifiers that can be reconciled between low-side manifests and high-side receipts.
-- [ ] 5.3 Implement valid state transition enforcement for generated, approved, exported, transferred, imported, published, rejected, failed, and superseded batches.
-- [ ] 5.4 Implement operator APIs or commands for viewing pending snapshots, approved batches, exported batches, imported batches, publication status, and audit history.
-
-## 6. Transfer Package Generation
-
-- [ ] 6.1 Implement transfer batch selection from eligible snapshots with capacity estimates and batch splitting support.
-- [ ] 6.2 Implement Pulp export orchestration for approved immutable repository versions.
-- [ ] 6.3 Implement the transfer manifest schema with repository metadata, Pulp repository versions, content counts, digests, export artifact references, approval metadata, provenance, and compatibility constraints.
-- [ ] 6.4 Implement checksum generation for every manifest and payload artifact.
-- [ ] 6.5 Implement low-side manifest signing using the approved signing authority and produce operator-readable transfer instructions.
-
-## 7. High-Side Import and Publication
-
-- [ ] 7.1 Implement offline package intake from mounted media or private high-side storage without public internet dependencies.
-- [ ] 7.2 Implement pre-import validation for manifest schema, compatibility version, checksums, signatures, duplicate batch status, predecessor rules, and approval evidence.
-- [ ] 7.3 Implement Pulp import orchestration and task tracking for validated transfer packages.
-- [ ] 7.4 Implement controlled publication of imported repository versions to internal high-side endpoints after operator promotion.
-- [ ] 7.5 Implement import receipt generation with validation results, imported snapshot identifiers, publication endpoints, timestamps, and signature for low-side reconciliation.
-
-## 8. Verification and Operations
-
-- [ ] 8.1 Add tests for repository source configuration, hydration scheduling, snapshot eligibility, and no-change sync handling.
-- [ ] 8.2 Add tests for state transitions, duplicate import rejection, out-of-order publication rejection, and audit event recording.
-- [ ] 8.3 Add tests for transfer manifest generation, checksum validation, signature validation, schema compatibility rejection, and batch capacity enforcement.
-- [ ] 8.4 Add tests for high-side import, publication, receipt generation, and rollback to last known-good repository versions.
-- [ ] 8.5 Add deployment validation tests for government endpoints, private-only access, managed identity, CMK-capable storage, required compliance tags, and digest-pinned ACR references.
-- [ ] 8.6 Document operator runbooks for low-side hydration, transfer approval, media preparation, high-side import, publication, receipt reconciliation, failure recovery, and rollback.
+- [ ] 3.1 Keep Phase 2 - Repository Workflow Foundation as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
+- [ ] 3.2 Keep Phase 3 - High-Side Import, Publication, and Operations as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
+- [ ] 3.3 Keep Phase 4 - Verification, Pilot, and Stable Rollout as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
+- [ ] 3.4 Keep Future - Ecosystem Expansion as a GitHub milestone placeholder for Red Hat/RPM, Ubuntu Pro/ESM, additional distributions, OCI content mirroring in Pulp, richer UI, and advanced compliance integrations.

@@ -12,41 +12,49 @@ The high-side service SHALL accept transfer packages from operator-provided offl
 - **THEN** package intake, validation, import, and publication MUST continue using only private high-side services
 
 ### Requirement: Pre-import validation
-The high-side service MUST validate manifest schema, compatibility version, checksums, signatures, duplicate status, predecessor rules, and operator approval evidence before invoking Pulp import.
+The high-side service MUST validate JSON manifest schema, compatibility version, checksums, duplicate status, predecessor rules, and approval metadata before invoking Pulp import.
 
 #### Scenario: Validation succeeds
-- **WHEN** a package passes schema, integrity, signature, duplicate, predecessor, and approval checks
+- **WHEN** a package passes schema, integrity, duplicate, predecessor, and approval checks without compatibility warnings
 - **THEN** the high-side service marks the package ready for Pulp import
 
-#### Scenario: Missing approval evidence
-- **WHEN** a package lacks required approval metadata
-- **THEN** the high-side service rejects the package before Pulp import
+#### Scenario: Checksum validation fails
+- **WHEN** a manifest or payload checksum validation fails
+- **THEN** the high-side service rejects the entire transfer package
+
+#### Scenario: Compatibility warning requires override
+- **WHEN** a package passes integrity validation but has a Pulp or `pulp_deb` compatibility warning
+- **THEN** the high-side service prevents import until a privileged operator supplies an audited override
 
 ### Requirement: Pulp import orchestration
-The high-side service SHALL invoke Pulp import for validated transfer packages and track task progress through completion or failure.
+The high-side service SHALL invoke native Pulp import for validated transfer packages and track task progress through completion or failure.
 
 #### Scenario: Import completes
 - **WHEN** Pulp completes an import task successfully
-- **THEN** the system records imported repository versions and creates an import receipt for the transfer batch
+- **THEN** the high-side system records imported repository versions and marks the transfer batch publication-ready
 
 #### Scenario: Import fails
 - **WHEN** Pulp reports an import failure
 - **THEN** the system records failure details and MUST NOT mark the batch as publication-ready
 
-### Requirement: Controlled publication
-The high-side service SHALL publish imported repository snapshots only after successful validation, import, and operator promotion.
+### Requirement: Controlled internal HTTPS APT publication
+The high-side service SHALL publish imported Ubuntu APT repository snapshots to internal HTTPS endpoints using internal PKI only after successful validation, import, and operator promotion.
 
-#### Scenario: Promote imported batch
-- **WHEN** an operator promotes a successfully imported batch
-- **THEN** the high-side service publishes the corresponding repository versions to configured internal endpoints
+#### Scenario: Promote imported batch to channel
+- **WHEN** an operator promotes a successfully imported batch to a test or prod channel
+- **THEN** the high-side service publishes the corresponding repository versions to stable internal HTTPS APT endpoints
+
+#### Scenario: Publish immutable snapshot URL
+- **WHEN** a repository snapshot is imported successfully
+- **THEN** the high-side service exposes or records an immutable snapshot URL for that repository version
 
 #### Scenario: Supersede previous publication
 - **WHEN** a newer snapshot is promoted for a repository
 - **THEN** the high-side service records the previous publication as superseded while retaining rollback metadata
 
-### Requirement: Import receipt export
-The high-side service SHALL generate an import receipt that can be carried back to the low side for reconciliation.
+### Requirement: Rollback publication
+The high-side service SHALL allow an explicitly approved rollback by republishing a previous known-good repository version to the same stable client endpoint.
 
-#### Scenario: Generate receipt after publication
-- **WHEN** a batch is imported and published
-- **THEN** the high-side service generates a receipt with batch identifier, imported snapshot identifiers, validation results, publication endpoints, timestamps, and signature
+#### Scenario: Roll back bad publication
+- **WHEN** an operator approves rollback for a published repository channel
+- **THEN** the high-side service republishes the previous known-good repository version to the same stable endpoint and records the rollback in audit history
