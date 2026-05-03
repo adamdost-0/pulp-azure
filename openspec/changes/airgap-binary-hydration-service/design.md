@@ -72,6 +72,12 @@ Both sides will use the same application containers and IaC modules where possib
 
 Container Apps and a PostgreSQL-compatible database are required services. If parity gaps are discovered, fallback patterns will be documented but not implemented until explicitly authorized.
 
+The Phase 1 Definition of Ready is captured in `phase-1-definition-of-ready.md`.
+It uses the Azure service/SKU parity matrix in `azure-service-parity-matrix.md`
+as the source for the current gate posture: low-side and planning work may
+proceed, but high-side Azure Government Secret implementation remains blocked
+until Microsoft/account-team confirmations or approved fallbacks are recorded.
+
 ### Treat image mirroring as a first-class release artifact
 
 Every service image, Pulp image, support image, operational/admin image, and Container Apps runtime dependency required for deployment must be available in high-side ACR before high-side deployment. Images move as OCI tarballs on manual media and are imported into high-side ACR. High-side references use tag plus digest. Production releases require an image bill of materials.
