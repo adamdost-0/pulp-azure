@@ -77,6 +77,14 @@ It uses the Azure service/SKU parity matrix in `azure-service-parity-matrix.md`
 as the source for the current gate posture: selected service roles have no known
 parity delta across the target clouds, and Phase 1 must produce
 target-environment validation evidence before each deployment milestone closes.
+`phase-1-evidence-backbone.md` defines the reusable evidence package structure,
+control fields, negative tests, and GitHub issue closeout rule for Phase 1
+issues #8 through #14.
+Issue-specific Phase 1 alignment is captured in
+`phase-1-azure-platform-foundation.md`, `phase-1-image-supply-chain.md`,
+`phase-1-private-networking-dns.md`, `phase-1-postgresql-foundation.md`,
+`phase-1-diagnostics-operations.md`, `phase-1-pulp-runtime-topology.md`, and
+`phase-1-platform-milestone-test.md`.
 
 ### Treat image mirroring as a first-class release artifact
 

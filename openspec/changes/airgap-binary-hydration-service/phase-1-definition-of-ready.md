@@ -21,6 +21,8 @@ require Phase 1 validation evidence.
 | Local harness script | `harness/local/scripts/run-low-high-e2e.sh` runs the low-side sync/export and high-side import/publish path. |
 | Harness documentation | `harness/local/README.md` documents the low/high topology and evidence layout. |
 | Azure parity evidence | `openspec/changes/airgap-binary-hydration-service/azure-service-parity-matrix.md`. |
+| Phase 1 evidence contract | `openspec/changes/airgap-binary-hydration-service/phase-1-evidence-backbone.md`. |
+| Phase 1 issue alignment | `phase-1-azure-platform-foundation.md`, `phase-1-image-supply-chain.md`, `phase-1-private-networking-dns.md`, `phase-1-postgresql-foundation.md`, `phase-1-diagnostics-operations.md`, `phase-1-pulp-runtime-topology.md`, and `phase-1-platform-milestone-test.md`. |
 
 ### Issue #6 local harness pass summary
 
@@ -159,3 +161,6 @@ managed database SKU, Key Vault private endpoint/CMK/purge protection,
 diagnostics/private link or approved fallback, private DNS endpoint suffixes,
 managed identity behavior, and cloud-specific service limits or support
 constraints.
+
+The reusable evidence package format, common control fields, negative tests, and
+GitHub issue closeout rule are defined in `phase-1-evidence-backbone.md`.

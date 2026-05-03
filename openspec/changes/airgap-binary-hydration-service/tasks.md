@@ -10,13 +10,13 @@
 
 ## 2. Phase 1 - Azure/Pulp Platform Foundation
 
-- [ ] 2.1 Align Azure platform foundation with GitHub issue #8: Container Apps, ACR, Storage, PostgreSQL-compatible DB, Key Vault, diagnostics, private networking, CMK, tags, managed identity, and least-privilege RBAC.
-- [ ] 2.2 Align Pulp runtime and Container Apps topology with GitHub issue #9: Pulp API, workers, content serving, scheduled jobs, identical Pulp 3.x/`pulp_deb` versions, no `pulp_container`, health checks, scaling, and failure behavior.
-- [ ] 2.3 Align PostgreSQL state foundation with GitHub issue #10: private access, CMK, backups, restore path, diagnostics, access controls, schema migration, and strongly consistent state transitions.
-- [ ] 2.4 Align image mirroring and ACR supply chain with GitHub issue #11: OCI tarball transfer, high-side ACR import, production image BOM, tag-plus-digest references, and deployment validation.
-- [ ] 2.5 Align private networking and DNS validation with GitHub issue #12: private endpoints, private DNS, no public internet/DNS/registry/service endpoint dependencies, and validation failure on public references.
-- [ ] 2.6 Align diagnostics and operational baseline with GitHub issue #13: logs, metrics, audit events, private diagnostics access, retention, backup/restore tests, and private/local export fallback.
-- [ ] 2.7 Align platform milestone test with GitHub issue #14: low-side and high-side private startup, Pulp/PostgreSQL/storage/Key Vault/diagnostics health, and no high-side public runtime dependencies.
+- [x] 2.1 Align Azure platform foundation with GitHub issue #8: Container Apps, ACR, Storage, PostgreSQL-compatible DB, Key Vault, diagnostics, private networking, CMK, tags, managed identity, and least-privilege RBAC.
+- [x] 2.2 Align Pulp runtime and Container Apps topology with GitHub issue #9: Pulp API, workers, content serving, scheduled jobs, identical Pulp 3.x/`pulp_deb` versions, no `pulp_container`, health checks, scaling, and failure behavior.
+- [x] 2.3 Align PostgreSQL state foundation with GitHub issue #10: private access, CMK, backups, restore path, diagnostics, access controls, schema migration, and strongly consistent state transitions.
+- [x] 2.4 Align image mirroring and ACR supply chain with GitHub issue #11: OCI tarball transfer, high-side ACR import, production image BOM, tag-plus-digest references, and deployment validation.
+- [x] 2.5 Align private networking and DNS validation with GitHub issue #12: private endpoints, private DNS, no public internet/DNS/registry/service endpoint dependencies, and validation failure on public references.
+- [x] 2.6 Align diagnostics and operational baseline with GitHub issue #13: logs, metrics, audit events, private diagnostics access, retention, backup/restore tests, and private/local export fallback.
+- [x] 2.7 Align platform milestone test with GitHub issue #14: low-side and high-side private startup, Pulp/PostgreSQL/storage/Key Vault/diagnostics health, and no high-side public runtime dependencies.
 
 ## 3. Later Roadmap Milestones
 
