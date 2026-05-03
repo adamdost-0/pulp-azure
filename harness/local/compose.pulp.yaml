@@ -1,0 +1,145 @@
+services:
+  # This legacy compose path validates the deb workflow only. It intentionally
+  # omits /dev/fuse and pulp_container build mounts required for OCI builds.
+  postgres:
+    image: "${POSTGRES_IMAGE:?POSTGRES_IMAGE is required}"
+    platform: "${SUPPORT_PLATFORM:-linux/arm64}"
+    environment:
+      POSTGRES_USER: pulp
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pulp
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+    volumes:
+      - "pg_data:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pulp"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  redis:
+    image: "${REDIS_IMAGE:?REDIS_IMAGE is required}"
+    platform: "${SUPPORT_PLATFORM:-linux/arm64}"
+    volumes:
+      - "redis_data:/data"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  migration:
+    image: "${PULP_IMAGE:?PULP_IMAGE is required}"
+    platform: "${PULP_PLATFORM:-linux/amd64}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["pulpcore-manager", "migrate", "--noinput"]
+    volumes:
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/settings.py:/etc/pulp/settings.py:Z"
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/certs:/etc/pulp/certs:Z"
+      - "pulp:/var/lib/pulp"
+
+  init-admin:
+    image: "${PULP_IMAGE:?PULP_IMAGE is required}"
+    platform: "${PULP_PLATFORM:-linux/amd64}"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+    command: ["set_init_password.sh"]
+    environment:
+      PULP_DEFAULT_ADMIN_PASSWORD: password
+    volumes:
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/settings.py:/etc/pulp/settings.py:Z"
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/certs:/etc/pulp/certs:Z"
+      - "pulp:/var/lib/pulp"
+
+  pulp_api:
+    image: "${PULP_IMAGE:?PULP_IMAGE is required}"
+    platform: "${PULP_PLATFORM:-linux/amd64}"
+    command: ["pulp-api"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+      init-admin:
+        condition: service_completed_successfully
+    hostname: pulp-api
+    user: pulp
+    volumes:
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/settings.py:/etc/pulp/settings.py:Z"
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/certs:/etc/pulp/certs:Z"
+      - "pulp:/var/lib/pulp"
+    healthcheck:
+      test: ["CMD", "readyz.py", "/pulp/api/v3/status/"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+  pulp_content:
+    image: "${PULP_IMAGE:?PULP_IMAGE is required}"
+    platform: "${PULP_PLATFORM:-linux/amd64}"
+    command: ["pulp-content"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+    hostname: pulp-content
+    user: pulp
+    volumes:
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/settings.py:/etc/pulp/settings.py:Z"
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/certs:/etc/pulp/certs:Z"
+      - "pulp:/var/lib/pulp"
+    healthcheck:
+      test: ["CMD", "readyz.py", "/pulp/content/"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+
+  pulp_worker:
+    image: "${PULP_IMAGE:?PULP_IMAGE is required}"
+    platform: "${PULP_PLATFORM:-linux/amd64}"
+    command: ["pulp-worker"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      migration:
+        condition: service_completed_successfully
+    user: pulp
+    volumes:
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/settings.py:/etc/pulp/settings.py:Z"
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/certs:/etc/pulp/certs:Z"
+      - "pulp:/var/lib/pulp"
+
+  pulp_web:
+    image: "${PULP_WEB_IMAGE:?PULP_WEB_IMAGE is required}"
+    platform: "${PULP_PLATFORM:-linux/amd64}"
+    command: ["/usr/bin/nginx.sh"]
+    depends_on:
+      pulp_api:
+        condition: service_healthy
+      pulp_content:
+        condition: service_healthy
+    hostname: pulp
+    user: root
+    ports:
+      - "${PULP_HTTP_PORT:-18080}:8080"
+    volumes:
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/bin/nginx.sh:/usr/bin/nginx.sh:Z"
+      - "${HARNESS_WORKDIR:?HARNESS_WORKDIR is required}/assets/nginx/nginx.conf.template:/etc/nginx/nginx.conf.template:Z"
+
+volumes:
+  pulp:
+  pg_data:
+  redis_data:
