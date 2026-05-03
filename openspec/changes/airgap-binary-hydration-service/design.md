@@ -85,6 +85,8 @@ Alternatives considered:
 
 Phase 0 includes a local low-side/high-side Pulp capability harness using pinned Pulp 3.x and `pulp_deb` versions. The harness must prove sync, immutable repository version creation, native Pulp export/import, bundle staging, JSON manifest generation, checksum validation, publication, and Ubuntu 22.04-compatible apt client consumption before Phase 1 Azure deployment begins.
 
+The local harness will use Podman Compose. Connected local development may pull public Pulp images, but image mirroring into private ACR remains mandatory before Phase 1 high-side deployment. The exact Pulp 3.x and `pulp_deb` versions will be pinned after the local spike validates a stable combination. The default test mode will generate a tiny Ubuntu-style APT fixture in the repository; live Ubuntu sync can be added as an optional connected-mode test. Local publication may use HTTP for rapid validation, while internal HTTPS and PKI are validated in Phase 1. Apt consumption will be validated with a disposable Ubuntu 22.04 container. High-side offline behavior will be simulated with a separate isolated Podman network that has no egress after artifacts are staged.
+
 ## Risks / Trade-offs
 
 - **Azure Gov Secret service parity/SKU availability** -> Confirm selected services across Azure Commercial, Azure Government, and Azure Government Secret before Phase 1 authorization.
@@ -94,6 +96,7 @@ Phase 0 includes a local low-side/high-side Pulp capability harness using pinned
 - **Private DNS/private endpoint misconfiguration creates hidden public dependency** -> Make high-side deployment validation fail on public endpoints, public registries, public DNS, missing private DNS, or tag-only images.
 - **Repository metadata changes while a sync is running** -> Export only immutable Pulp repository versions and reject manifests that reference mutable latest state.
 - **Operator error during import order** -> Enforce duplicate, predecessor, validation, and publication state checks before promotion.
+- **Local arm64 development may not match production image architecture** -> Validate whether selected Pulp images support arm64; otherwise document emulation or remote amd64 execution for the local harness.
 
 ## Migration Plan
 
@@ -113,4 +116,4 @@ Rollback uses immutable repository versions: a failed low-side export remains un
 - Which exact Pulp 3.x and `pulp_deb` versions will be pinned after validation?
 - What repository size, transfer interval, and hard-drive capacity targets should define default batch sizing rules?
 - What internal DNS names and internal PKI process will be used for high-side HTTPS APT publication endpoints?
-- What local fixture repository shape is sufficient to authorize the local Pulp capability harness?
+- Which local Pulp image architecture path is approved if pinned Pulp images do not support arm64?

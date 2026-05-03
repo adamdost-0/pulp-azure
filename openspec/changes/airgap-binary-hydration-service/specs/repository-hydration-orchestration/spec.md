@@ -49,8 +49,12 @@ The system MUST determine whether an Ubuntu APT repository snapshot is eligible 
 - **THEN** the system MUST NOT include it in a new batch unless an operator explicitly creates a replacement batch
 
 ### Requirement: Local capability test harness
-The system SHALL define a local low-side/high-side Pulp capability harness that proves Ubuntu APT sync, immutable snapshot creation, native export/import, publication, and apt client consumption before Azure deployment begins.
+The system SHALL provide a local low-side/high-side Pulp capability harness using Podman Compose that proves Ubuntu APT sync, immutable snapshot creation, native export/import, publication, and apt client consumption before Azure deployment begins.
 
 #### Scenario: Local end-to-end test passes
 - **WHEN** the local harness runs with a deterministic Ubuntu-style APT fixture and staged transfer bundle
 - **THEN** it proves low-side sync, transfer bundle staging, high-side import, high-side publication, and Ubuntu 22.04-compatible apt client consumption without requiring Azure resources
+
+#### Scenario: High-side offline simulation
+- **WHEN** transfer artifacts have been staged into the local high-side environment
+- **THEN** the high-side harness runs on an isolated Podman network without egress for validation, import, publication, and apt client consumption
