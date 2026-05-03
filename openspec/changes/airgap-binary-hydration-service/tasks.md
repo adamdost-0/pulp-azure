@@ -20,7 +20,7 @@
 
 ## 3. Later Roadmap Milestones
 
-- [ ] 3.1 Keep Phase 2 - Repository Workflow Foundation as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
-- [ ] 3.2 Keep Phase 3 - High-Side Import, Publication, and Operations as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
-- [ ] 3.3 Keep Phase 4 - Verification, Pilot, and Stable Rollout as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
-- [ ] 3.4 Keep Future - Ecosystem Expansion as a GitHub milestone placeholder for Red Hat/RPM, Ubuntu Pro/ESM, additional distributions, OCI content mirroring in Pulp, richer UI, and advanced compliance integrations.
+- [x] 3.1 Keep Phase 2 - Repository Workflow Foundation as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
+- [x] 3.2 Keep Phase 3 - High-Side Import, Publication, and Operations as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
+- [x] 3.3 Keep Phase 4 - Verification, Pilot, and Stable Rollout as a GitHub milestone placeholder until detailed acceptance criteria are authorized.
+- [x] 3.4 Keep Future - Ecosystem Expansion as a GitHub milestone placeholder for Red Hat/RPM, Ubuntu Pro/ESM, additional distributions, OCI content mirroring in Pulp, richer UI, and advanced compliance integrations.
