@@ -17,6 +17,7 @@ esac
 settings_dir="${workdir}/settings"
 admin_password="${PULP_ADMIN_PASSWORD:-password}"
 base_url="http://localhost:${port}"
+content_origin="${PULP_CONTENT_ORIGIN:-${base_url}}"
 
 usage() {
   cat <<EOF
@@ -34,20 +35,26 @@ write_settings() {
     "${workdir}/pulp_storage" \
     "${workdir}/pgsql" \
     "${workdir}/containers" \
-    "${workdir}/container_build"
+    "${workdir}/container_build" \
+    "${workdir}/exports" \
+    "${workdir}/imports"
 
-  python3 - "${settings_dir}/settings.py" "${base_url}" <<'PY'
+  python3 - "${settings_dir}/settings.py" "${content_origin}" <<'PY'
 import pathlib
 import sys
 
 settings_path = pathlib.Path(sys.argv[1])
 content_origin = sys.argv[2]
 existing = settings_path.read_text() if settings_path.exists() else ""
-lines = [line for line in existing.splitlines() if not line.startswith(("CONTENT_ORIGIN", "SECRET_KEY", "ANALYTICS"))]
+lines = [line for line in existing.splitlines() if not line.startswith(
+    ("CONTENT_ORIGIN", "SECRET_KEY", "ANALYTICS", "ALLOWED_EXPORT_PATHS", "ALLOWED_IMPORT_PATHS")
+)]
 lines.extend([
     f"CONTENT_ORIGIN = {content_origin!r}",
     "SECRET_KEY = 'local-single-container-harness-only'",
     "ANALYTICS = False",
+    "ALLOWED_EXPORT_PATHS = ['/var/lib/pulp/exports']",
+    "ALLOWED_IMPORT_PATHS = ['/var/lib/pulp/imports']",
 ])
 settings_path.write_text("\n".join(lines).rstrip() + "\n")
 PY
@@ -133,6 +140,8 @@ start_container() {
     --volume "${workdir}/pgsql:/var/lib/pgsql${volume_suffix}"
     --volume "${workdir}/containers:/var/lib/containers${volume_suffix}"
     --volume "${workdir}/container_build:/var/lib/pulp/.local/share/containers${volume_suffix}"
+    --volume "${workdir}/exports:/var/lib/pulp/exports${volume_suffix}"
+    --volume "${workdir}/imports:/var/lib/pulp/imports${volume_suffix}"
   )
   if [[ -e /dev/fuse ]]; then
     run_args+=(--device /dev/fuse)
@@ -143,6 +152,14 @@ start_container() {
 
   echo "Starting Pulp single-container as ${name} on ${base_url}"
   "${runtime}" "${run_args[@]}" >/dev/null
+
+  # Connect to an additional network after start so that the container remains
+  # on the default bridge (required for host port-publishing via gvproxy on
+  # macOS) while also being reachable from the high-side internal network that
+  # the APT client uses.
+  if [[ -n "${PULP_CONTAINER_NETWORK:-}" ]]; then
+    "${runtime}" network connect "${PULP_CONTAINER_NETWORK}" "${name}"
+  fi
 
   wait_for_status
   reset_admin_password

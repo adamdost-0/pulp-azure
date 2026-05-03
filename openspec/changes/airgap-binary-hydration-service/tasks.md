@@ -5,7 +5,7 @@
 - [x] 1.3 Align transfer contract with GitHub issue #3: JSON batch manifest, per-repository entries, checksums only, whole-batch rejection on checksum failure, and compatibility warning with privileged override.
 - [x] 1.4 Align state and authority model with GitHub issue #4: PostgreSQL-compatible state, strong lifecycle transitions, append-only audit history, and high-side-authoritative state after transfer.
 - [x] 1.5 Align publication contract with GitHub issue #5: internal HTTPS APT endpoints, internal PKI, stable channel URLs, immutable snapshot URLs, test/prod/snapshot channels, and no client auth beyond network isolation.
-- [ ] 1.6 Build and validate the local Pulp capability test harness from GitHub issue #6: Podman Compose, pinned Pulp 3.x and `pulp_deb`, generated Ubuntu-style APT fixture, local low/high Pulp stacks, bundle staging, manifest validation, publication, Ubuntu 22.04 apt client consumption, and isolated high-side no-egress simulation.
+- [x] 1.6 Build and validate the local Pulp capability test harness from GitHub issue #6: Podman Compose, pinned Pulp 3.x and `pulp_deb`, generated Ubuntu-style APT fixture, local low/high Pulp stacks, bundle staging, manifest validation, publication, Ubuntu 22.04 apt client consumption, and isolated high-side no-egress simulation.
 - [ ] 1.7 Define Phase 1 Definition of Ready from GitHub issue #7: Azure service/SKU parity, selected Pulp/PostgreSQL/image-mirroring methods, local harness pass, required controls, and Phase 1 milestone criteria.
 
 ## 2. Phase 1 - Azure/Pulp Platform Foundation
