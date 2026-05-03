@@ -96,7 +96,7 @@ The local harness will use Podman Compose. Connected local development may pull 
 - **Private DNS/private endpoint misconfiguration creates hidden public dependency** -> Make high-side deployment validation fail on public endpoints, public registries, public DNS, missing private DNS, or tag-only images.
 - **Repository metadata changes while a sync is running** -> Export only immutable Pulp repository versions and reject manifests that reference mutable latest state.
 - **Operator error during import order** -> Enforce duplicate, predecessor, validation, and publication state checks before promotion.
-- **Local arm64 development may not match production image architecture** -> Validate whether selected Pulp images support arm64; otherwise document emulation or remote amd64 execution for the local harness.
+- **Local arm64 development may not match production image architecture** -> Podman and Podman Compose have validated `linux/amd64` container execution on the arm64 workstation; keep `platform: linux/amd64` available for the local harness when pinned Pulp images require amd64.
 
 ## Migration Plan
 
@@ -116,4 +116,4 @@ Rollback uses immutable repository versions: a failed low-side export remains un
 - Which exact Pulp 3.x and `pulp_deb` versions will be pinned after validation?
 - What repository size, transfer interval, and hard-drive capacity targets should define default batch sizing rules?
 - What internal DNS names and internal PKI process will be used for high-side HTTPS APT publication endpoints?
-- Which local Pulp image architecture path is approved if pinned Pulp images do not support arm64?
+- Should the local harness use the upstream multi-plugin Pulp image for speed, or build a slimmer `pulp_deb`-focused image before Phase 1 image mirroring?
