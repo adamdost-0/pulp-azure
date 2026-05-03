@@ -74,9 +74,9 @@ Container Apps and a PostgreSQL-compatible database are required services. If pa
 
 The Phase 1 Definition of Ready is captured in `phase-1-definition-of-ready.md`.
 It uses the Azure service/SKU parity matrix in `azure-service-parity-matrix.md`
-as the source for the current gate posture: low-side and planning work may
-proceed, but high-side Azure Government Secret implementation remains blocked
-until Microsoft/account-team confirmations or approved fallbacks are recorded.
+as the source for the current gate posture: selected service roles have no known
+parity delta across the target clouds, and Phase 1 must produce
+target-environment validation evidence before each deployment milestone closes.
 
 ### Treat image mirroring as a first-class release artifact
 

@@ -7,10 +7,11 @@ the Phase 0 local proof outcome, the selected baseline decisions for Phase 1
 planning, the security controls required before Azure deployment, and the
 evidence criteria for GitHub issues #8 through #14.
 
-This is not approval to begin high-side Azure Government Secret implementation.
-The service/SKU parity matrix records that high-side implementation remains
-blocked until Microsoft/account-team confirmations or approved fallbacks are
-documented.
+This is not approval to skip target-environment validation. The service/SKU
+parity matrix records that the selected service roles have no known parity delta
+across Azure Commercial, Azure Government, and Azure Government Secret, while
+the exact target tenant, region, SKU, network mode, and security controls still
+require Phase 1 validation evidence.
 
 ## Inputs and evidence
 
@@ -64,15 +65,14 @@ evidence for issue #6 closeout.
 - Preferred managed database: Azure Database for PostgreSQL Flexible Server,
   if it is available with required private access, backup/restore, diagnostics,
   encryption, maintenance, and SKU support in the target cloud and region.
-- Azure Government Secret availability is not confirmed. Do not treat Flexible
-  Server, HA, private access, CMK, backup, maintenance, or diagnostics as
-  approved for the high side until Microsoft/account-team confirmation is
-  recorded.
-- If the target cloud cannot provide an approved PostgreSQL-compatible managed
-  service, Phase 1 high-side implementation is blocked until an approved
-  fallback is selected. Candidate fallback patterns must be explicitly reviewed
-  for operations, backup/restore, encryption, patching, diagnostics, and support
-  ownership before use.
+- The selected service role has no known cloud-service parity delta. Phase 1
+  must still validate the exact target-region/SKU behavior for private access,
+  CMK, backup, maintenance, HA, diagnostics, and support operations.
+- If target-environment validation discovers that the preferred managed service
+  cannot satisfy a required control, Phase 1 must select an approved fallback.
+  Candidate fallback patterns must be explicitly reviewed for operations,
+  backup/restore, encryption, patching, diagnostics, and support ownership
+  before use.
 
 ### Image mirroring method
 
@@ -92,7 +92,7 @@ references, missing images, and digest mismatches.
 ## Required security controls checklist
 
 Phase 1 issues #8 through #14 must retain the following controls unless an
-approved scoped waiver is recorded:
+approved control exception is recorded:
 
 - [ ] Private endpoints and private DNS for supported PaaS services.
 - [ ] Public network access disabled for supported PaaS services.
@@ -135,30 +135,27 @@ approved scoped waiver is recorded:
 
 | Gate result | Meaning | Allowed work |
 | --- | --- | --- |
-| Pass | All selected high-side services/SKUs and controls are confirmed for the target cloud and region. | Phase 1 implementation may proceed for low side and high side. |
-| Pass with scoped waiver | One or more high-side confirmations remain open, but the scope is explicitly limited and the risk owner/fallback is documented. | Low-side implementation, Azure Government planning, design refinement, or other explicitly scoped work may proceed. High-side work outside the waiver remains blocked. |
-| Block | A required high-side service/SKU/control is unknown or unavailable with no approved fallback. | Do not begin affected Phase 1 implementation. Record the blocker and required confirmation. |
+| Pass | Selected service roles have no known parity delta and target-environment validations are complete for the intended deployment scope. | Phase 1 implementation may proceed for the validated scope. |
+| Pass with validation required | Selected service roles have no known parity delta, but exact target-region/SKU/control validation remains an implementation milestone criterion. | Phase 1 implementation may proceed, but individual epics cannot close until their validation evidence is produced. |
+| Block | Target validation discovers an actual service, SKU, endpoint, or control gap with no approved fallback. | Do not proceed with the affected scope until a fallback or waiver is approved. |
 
 ## Current DoR status
 
-Current status: pass with scoped waiver for planning and low-side work only;
-block high-side Azure Government Secret implementation.
+Current status: pass with validation required.
 
-Issue #7 can close as a planning gate only if its closeout records that:
+Issue #7 can close as a planning gate because:
 
-- Azure Government Secret service/SKU parity is not fully confirmed.
-- High-side implementation remains blocked pending Microsoft/account-team
-  confirmations or approved fallbacks.
+- The selected service roles have no known parity delta across the target clouds.
+- The remaining work is target-environment validation evidence, not a known
+  service-availability blocker.
 - The selected Pulp baseline, PostgreSQL preference, image mirroring method,
   local harness pass, required controls, and Phase 1 evidence criteria are
   documented here and in the parity matrix.
 
-If issue #7 is interpreted literally to require full Azure Commercial, Azure
-Government, and Azure Government Secret service/SKU parity confirmation before
-closure, then #7 remains blocked. The remaining confirmations are the Gov Secret
-items listed in the parity matrix: Container Apps workload profile support,
-ACR Premium/private endpoint/CMK/import workflow, Storage private endpoint/CMK
-capabilities, PostgreSQL-compatible managed database product/SKU, Key Vault
-private endpoint/CMK/purge protection support, diagnostics/private link or
-approved fallback, private DNS endpoint suffixes, managed identity behavior, and
-cloud-specific service limits or support constraints.
+Phase 1 epics still must produce validation evidence for the target environment:
+Container Apps workload profile behavior, ACR private endpoint/CMK/import
+workflow, Storage private endpoint/CMK capabilities, PostgreSQL-compatible
+managed database SKU, Key Vault private endpoint/CMK/purge protection,
+diagnostics/private link or approved fallback, private DNS endpoint suffixes,
+managed identity behavior, and cloud-specific service limits or support
+constraints.
