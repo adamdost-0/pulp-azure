@@ -1,0 +1,23 @@
+{
+  "universe_usage_history": [
+    {
+      "universe": "Firefly",
+      "assignment_id": "20260504T150333Z-initial-team",
+      "used_at": "2026-05-04T15:03:33.394+00:00"
+    }
+  ],
+  "assignment_cast_snapshots": {
+    "20260504T150333Z-initial-team": {
+      "universe": "Firefly",
+      "agents": {
+        "lead": "Zoe",
+        "azure-platform": "Kaylee",
+        "integration-automation": "Wash",
+        "security-compliance": "Simon",
+        "tester": "River",
+        "customer-enablement": "Book"
+      },
+      "created_at": "2026-05-04T15:03:33.394+00:00"
+    }
+  }
+}
