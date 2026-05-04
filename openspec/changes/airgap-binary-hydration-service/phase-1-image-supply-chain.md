@@ -63,6 +63,25 @@ The high-side validation procedure MUST:
 6. Confirm no public registry hostnames are present in deployment configuration.
 7. Record validation results in the issue #11 evidence package.
 
+## Evidence threshold
+
+Issue #11 evidence MUST include:
+
+| Artifact | Requirement |
+| --- | --- |
+| Image BOM | JSON or table containing every required field in this document for each image. |
+| Source digest capture | Command output or registry metadata proving each approved source digest. |
+| OCI export log | Command output showing each approved image exported to an OCI archive. |
+| Transfer checksum manifest | Checksums for each OCI archive and BOM artifact. |
+| High-side import log | Command output or API result showing each image imported into private ACR. |
+| Target digest capture | Command output or ACR metadata proving each target digest after import. |
+| Deployment reference scan | Machine-readable or command output proof that deployment references use private ACR tag-plus-digest references only. |
+| Rejection test results | One result per required rejection test with expected result, actual result, and final status. |
+
+Command logs alone are not sufficient unless they include the image name, tag,
+digest, target registry, validation result, and timestamp needed to correlate
+the result back to the BOM.
+
 ## Deployment reference rule
 
 Production and high-side image references MUST use:

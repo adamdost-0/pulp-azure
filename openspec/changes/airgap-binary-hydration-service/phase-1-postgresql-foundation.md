@@ -42,6 +42,30 @@ Validation MUST prove that the database enforces at least these lifecycle rules:
 - A compatibility warning requires privileged override and justification before
   import continues.
 
+## Required consistency and race tests
+
+Issue #10 closeout MUST include these transition tests with command/log
+evidence and final state verification:
+
+| Scenario | Pass criteria |
+| --- | --- |
+| Concurrent batch selection | Two concurrent attempts to include the same eligible snapshot cannot both create approved normal transfer batches. Exactly one authoritative result is accepted. |
+| Concurrent import | Two concurrent import attempts for the same validated high-side batch cannot both succeed. The duplicate preserves the original import state. |
+| Publish before import race | A publish request racing with an import task cannot publish until the import success state is committed. |
+| Override race | A compatibility override cannot be applied after a conflicting reject/failure terminal state without a new approved workflow. |
+| Rollback race | Competing rollback and promote operations produce one authoritative publication result and append complete audit history. |
+
+## Migration and rollback pass criteria
+
+Schema migration validation passes only when:
+
+1. Migration applies cleanly from the previous schema version.
+2. Required indexes/constraints for lifecycle transition enforcement exist after
+   migration.
+3. Existing state and audit history remain readable.
+4. Rollback or forward-fix procedure is tested for a failed migration.
+5. A failed migration does not leave partially applied authoritative state.
+
 ## Backup and restore validation
 
 The evidence package MUST include:
@@ -52,6 +76,12 @@ The evidence package MUST include:
 4. Validation that restored state preserves lifecycle state, audit history, and
    deterministic identifiers.
 5. Operational ownership for restore approval and execution.
+
+The restore drill passes only when restored state can reject a duplicate import,
+publish the latest publication-ready batch, and retrieve audit history for the
+restored batch/snapshot identifiers. The evidence package must record the
+environment-specific recovery objective target or state that the target is not
+yet authorized for Phase 1.
 
 ## Validation evidence for issue #10
 

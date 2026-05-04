@@ -18,6 +18,25 @@ endpoints.
 | Diagnostics | AMPLS/private link where supported or approved private/local export fallback. |
 | Pulp content/API | Internal ingress only for high-side runtime and publication paths. |
 
+## Diagnostics fallback definition
+
+An approved diagnostics fallback is valid only when the target cloud or selected
+diagnostics service cannot satisfy private diagnostics access directly. The
+fallback MUST:
+
+1. Use only private or local high-side paths.
+2. Preserve required logs, metrics, audit events, timestamps, and correlation
+   identifiers.
+3. Define retention and export ownership.
+4. Prove operators can retrieve evidence without public internet access.
+5. Record the reason Azure-native private diagnostics is unavailable or not
+   selected.
+
+The diagnostics fallback acceptance test passes only when a synthetic platform
+event and a synthetic application audit event are emitted, retrieved from the
+fallback path, correlated to the originating component, and exported to the
+approved evidence location without public endpoint access.
+
 ## Cloud-specific suffixes
 
 IaC and validation must parameterize endpoint suffixes rather than hardcoding
@@ -47,6 +66,18 @@ Validation MUST prove:
 7. No high-side configuration references public DNS resolvers, public package
    sources, public service endpoints, or commercial endpoint suffixes.
 
+## Evidence checklist
+
+Issue #12 closeout requires all of these proof types:
+
+| Proof type | Required evidence |
+| --- | --- |
+| IaC plan | Shows private endpoint resources, private DNS zones, VNet links, resolver settings, NSG/UDR controls, and public access settings. |
+| Deployed state | Shows private endpoints are approved, DNS zones are linked, and public access is disabled where supported. |
+| Runtime DNS resolution | Shows Container Apps/runtime clients resolve ACR, Storage, PostgreSQL-compatible DB, Key Vault, diagnostics, and Pulp endpoints to private paths. |
+| Runtime connectivity | Shows image pulls, service calls, package intake/import/publication, and diagnostics access work without public internet access. |
+| Negative tests | Show validation fails for public endpoint, public DNS resolver, public registry, public package source, commercial endpoint suffix, missing private DNS link, and missing diagnostics private access/fallback. |
+
 ## Required rejection tests
 
 Validation MUST fail when high-side configuration contains:
@@ -66,5 +97,6 @@ Issue #12 can close only when its evidence package proves:
 2. Runtime DNS resolves required services to private paths.
 3. Container Apps starts and operates using private ACR and private services.
 4. High-side no-public-runtime-dependency checks pass.
-5. Public endpoint, public DNS, public registry, public package source, and
+5. Diagnostics uses private access or the approved fallback test passes.
+6. Public endpoint, public DNS, public registry, public package source, and
    commercial endpoint hardcoding rejection tests pass.

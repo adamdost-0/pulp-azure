@@ -70,6 +70,22 @@ Phase 1 evidence MUST document:
 - How failed tasks are surfaced in service state and audit history.
 - How high-side import/publication avoids public runtime dependencies.
 
+## Required runtime validation matrix
+
+Issue #9 closeout MUST include this matrix with expected result, actual result,
+command/log evidence, and pass/fail status:
+
+| Scenario | Pass criteria |
+| --- | --- |
+| Replica bounds | Declared minimum and maximum replica counts for API, content, and workers are applied in the target environment and reflected in deployed state. |
+| Job concurrency | Declared sync/export/import/publish job concurrency limits are applied, and an over-limit submission is queued or rejected according to the documented policy. |
+| API startup probe failure | If PostgreSQL, Storage, Key Vault, or required configuration is unavailable, API startup/readiness fails visibly and does not report healthy. |
+| Content startup probe failure | If content storage or publication configuration is unavailable, content serving readiness fails visibly and does not report healthy. |
+| Worker dependency outage | If PostgreSQL, Storage, or Key Vault is unavailable, worker task execution fails safely, records failure, and does not mark state successful. |
+| Pulp task failure | A failed sync/export/import/publish task is captured in service state, emits diagnostics, and writes audit history where applicable. |
+| Image pull failure | Missing or mismatched private ACR image prevents startup and is surfaced as a deployment validation or runtime failure. |
+| High-side private-only operation | High-side API/content/workers/jobs start and execute validation using private ACR and private service endpoints only. |
+
 ## Deployment image rule
 
 Every runtime component must reference an approved private ACR image by tag plus

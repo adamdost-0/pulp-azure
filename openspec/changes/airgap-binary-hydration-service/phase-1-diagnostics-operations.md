@@ -68,6 +68,27 @@ Phase 1 operational validation MUST include drills or documented tests for:
 - Backup restore execution.
 - Private/local log export fallback.
 
+## Backup and restore drill pass criteria
+
+Issue #13 backup/restore validation MUST cover Pulp content, PostgreSQL state,
+and critical configuration.
+
+| Area | Pass criteria |
+| --- | --- |
+| Pulp content | Restored content can serve a known repository snapshot through the expected internal publication path, and checksum/sample package validation matches pre-backup evidence. |
+| PostgreSQL state | Restored state preserves lifecycle state, deterministic identifiers, and append-only audit history; duplicate/out-of-order operation rejection still works after restore. |
+| Critical configuration | Restored Key Vault references, app settings, private endpoint/DNS bindings, image references, and diagnostics settings match the approved configuration or have documented differences. |
+| Evidence | Drill output includes command logs, validation JSON or equivalent structured result, timestamps, actor/operator, source backup identifier, target restore environment, and pass/fail status. |
+| Recovery objective | Evidence records the rollout environment's RTO/RPO or explicitly states that formal RTO/RPO is not yet authorized for the Phase 1 validation scope. |
+
+## Operational failure drill pass criteria
+
+Each failure drill passes only when the platform detects the failure, prevents a
+false-success state, emits the required diagnostic/audit event, and recovers or
+documents the operator action needed to recover. For disconnected high-side
+operations, evidence must be retrievable through private diagnostics access or
+the approved local/private export fallback.
+
 ## Validation evidence for issue #13
 
 Issue #13 can close only when its evidence package proves:

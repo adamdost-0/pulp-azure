@@ -62,6 +62,21 @@ Every Azure resource MUST include:
 | `Classification` | `CUI`, `Secret`, or `TopSecret`. |
 | `Compliance` | `FedRAMP-High`, `IL4`, `IL5`, or `IL6`. |
 
+## CMK applicability
+
+Issue #8 evidence MUST make CMK status explicit for each data-at-rest service.
+The evidence package cannot use only "where required" language; it must record
+one of `required-configured`, `not-supported`, `not-required-by-policy`, or
+`waived` for each service.
+
+| Service role | Phase 1 CMK expectation |
+| --- | --- |
+| ACR | Required when using Premium/network-restricted production or high-side registry. Evidence must show CMK configured or approved target-cloud/SKU exception. |
+| Storage | Required for Pulp content, export/import payloads, manifests, and transfer staging unless policy explicitly waives CMK. |
+| PostgreSQL-compatible DB | Required when supported by the selected product/SKU; otherwise the fallback/exception must be approved before issue closeout. |
+| Key Vault | Key Vault is the CMK authority and must document key lifecycle, purge protection requirement, RBAC/access policy model, and diagnostics. |
+| Diagnostics/logging | CMK required where the selected diagnostics sink supports and policy requires it; otherwise record the approved fallback/exception. |
+
 ## RBAC model
 
 Managed identities must be scoped at the narrowest feasible resource scope:
@@ -76,6 +91,17 @@ Managed identities must be scoped at the narrowest feasible resource scope:
 
 No service-principal passwords, embedded storage keys, or secret-bearing
 connection strings are allowed in application configuration.
+
+## Evidence checklist
+
+Issue #8 closeout requires all of these proof types:
+
+| Proof type | Required evidence |
+| --- | --- |
+| IaC plan | Shows every required resource role, required tags, private endpoint declarations, managed identities, RBAC assignments, diagnostics, and CMK settings or explicit exceptions. |
+| Deployed state | Shows the applied target environment matches the plan for resource roles, tags, public access posture, identities, RBAC, diagnostics, and CMK status. |
+| Runtime verification | Shows Container Apps can reach required private services and pull approved private ACR images without public registry access. |
+| Negative tests | Show validation fails for public endpoints, public registries, public DNS, public package sources, commercial endpoint hardcoding, missing private endpoint/DNS declarations, missing identity/RBAC, and missing CMK where required. |
 
 ## Validation evidence for issue #8
 
