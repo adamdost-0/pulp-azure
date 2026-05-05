@@ -1960,3 +1960,7 @@ P1-A3 should consume P1-A2 export output/evidence, generate the handoff manifest
 
 P1-A2 is approved as complete for its narrow low-side slice. Do not broaden this decision into a full Phase 1, G2, G3, Azure, or AirGap readiness claim.
 
+### 2026-05-05: Pulp CLI Flow Diagram Generated
+**By:** Morpheus (Lead)
+**What:** Authored a technical SVG diagram (`docs/pulp-cli-flow.svg`) detailing the `pulp-cli` implementation steps to configure a Deb repository locally.
+**Why:** User requested a visual resource mapping out the interaction start-to-end to set up Pulp having a Deb configuration done via CLI.
