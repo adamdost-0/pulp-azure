@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 700">
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+        </marker>
+    </defs>
+    
+    <rect width="100%" height="100%" fill="#f9f9f9"/>
+    <text x="400" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#333">Pulp CLI Deb Configuration Flow</text>
+    
+    <!-- Step 1 -->
+    <rect x="200" y="80" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="110" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">1. Install Pulp CLI &amp; Deb Plugin</text>
+    
+    <line x1="400" y1="130" x2="400" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Step 2 -->
+    <rect x="200" y="160" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="190" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">2. Configure Base URL (localhost:8081)</text>
+    
+    <line x1="400" y1="210" x2="400" y2="240" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Step 3 -->
+    <rect x="200" y="240" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="270" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">3. Create Deb Remote</text>
+    
+    <line x1="400" y1="290" x2="400" y2="320" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Step 4 -->
+    <rect x="200" y="320" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="350" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">4. Create Deb Repository</text>
+    
+    <line x1="400" y1="370" x2="400" y2="400" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Step 5 -->
+    <rect x="200" y="400" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="430" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">5. Sync Repository with Remote</text>
+    
+    <line x1="400" y1="450" x2="400" y2="480" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Step 6 -->
+    <rect x="200" y="480" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="510" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">6. Create Publication</text>
+    
+    <line x1="400" y1="530" x2="400" y2="560" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    
+    <!-- Step 7 -->
+    <rect x="200" y="560" width="400" height="50" rx="5" fill="#e1f5fe" stroke="#333" stroke-width="2"/>
+    <text x="400" y="590" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">7. Create Distribution</text>
+    
+    <!-- End -->
+</svg>
