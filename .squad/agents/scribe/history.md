@@ -12,3 +12,6 @@ Scribe maintains decisions, orchestration logs, session logs, and cross-agent me
 ## Learnings
 
 Initial setup complete.
+
+## Learnings
+* **${timestamp}**: Processed spawn manifest for Playwright evidence session.

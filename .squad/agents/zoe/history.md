@@ -29,3 +29,8 @@
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Zoe; decisions.md updated.
 
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Zoe; decisions.md updated.
+
+- **2026-05-05T00:00:00Z**: Enforced global rule that all tests must capture evidence using Playwright CLI and log it into the `evidence/` folder with a clear description. Updated River's charter and Copilot instructions to reflect this architecture decision.
+
+## Learnings
+* **2026-05-05**: Updated team charter/instructions to enforce Playwright evidence requirements.
