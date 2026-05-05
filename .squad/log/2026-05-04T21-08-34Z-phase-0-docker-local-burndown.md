@@ -36,4 +36,4 @@ Real image references in `harness/local/.env` required for full e2e; documented 
 
 ## Next Steps
 
-Phase 1 application layer scaffolding (hydra CLI) unblocked. Phase 2 acceptance criteria pending Zoe's definition post-Phase-1.
+Phase 1 application layer scaffolding (operator CLI) unblocked. Phase 2 acceptance criteria pending Zoe's definition post-Phase-1.

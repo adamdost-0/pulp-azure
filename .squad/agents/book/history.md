@@ -45,7 +45,7 @@ Phase 0-2 local harness assumes Podman, but infrastructure supports Docker on lo
 
 **2026-05-04T21:08:34Z - Phase 0 Documentation Reconciliation Complete**
 
-All stale Podman-hardcode claims have been reconciled against verified script implementations. Decisions consolidated to decisions.md. Ready for Phase 1 operator documentation (hydra CLI runbooks, state tracking guides, compliance evidence formatting).
+All stale Podman-hardcode claims have been reconciled against verified script implementations. Decisions consolidated to decisions.md. Ready for Phase 1 operator documentation (operator CLI runbooks, state tracking guides, compliance evidence formatting).
 
 **2026-05-04T21:42:09.450+00:00 - Phase 1 Local Operator Setup Documentation Complete**
 

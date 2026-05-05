@@ -15,3 +15,4 @@ Initial setup complete.
 
 ## Learnings
 * **${timestamp}**: Processed spawn manifest for Playwright evidence session.
+[2026-05-05T04:36:44Z] scribe: Merged 2 inbox items into decisions.md; created orchestration and session logs.

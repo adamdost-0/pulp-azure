@@ -37,7 +37,7 @@
 
 **Verdict:** Phase 1 application-first batch approved. All artifacts consistent with standing decisions, scope clean, tests pass. Team may proceed to P1-A2 execution.
 
-**Next Recommended Work:** P1-A2 — Orchestration operator command (`hydra` or `bundle-tools` expansion). Wires declarative workflow plan to executable CLI + Pulp calls on running harness instance.
+**Next Recommended Work:** P1-A2 — Orchestration operator command (`bundle-tools` expansion or neutral operator CLI). Wires declarative workflow plan to executable CLI + Pulp calls on running harness instance.
 
 ---
 
@@ -71,10 +71,10 @@ All Phase 1 decisions merged to `.squad/decisions.md`:
 
 ## Immediate Actions
 
-1. **Kaylee (Platform):** Begin P1-A1 — scaffold `src/hydra/` with pyproject.toml, Click/Typer CLI, test structure.
-2. **Wash:** Set up CI syntax-check gate for `src/hydra/`.
+1. **Kaylee (Platform):** Begin P1-A1 — scaffold the operator CLI application root with pyproject.toml, Click/Typer CLI, test structure.
+2. **Wash:** Set up CI syntax-check gate for the operator CLI application root.
 3. **River:** Define negative test cases for manifest validation (corrupt/missing files).
-4. **Book:** Draft operator quickstart for hydra CLI (stub, updated as commands land).
+4. **Book:** Draft operator quickstart for the operator CLI (stub, updated as commands land).
 5. **Zoe:** Review P1-A1 at G1 gate.
 
 ---

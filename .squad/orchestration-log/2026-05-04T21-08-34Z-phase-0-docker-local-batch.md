@@ -44,4 +44,4 @@ Not actionable in this batch; documented in decisions.md:
 
 ## Next Phase (Phase 1)
 
-Application layer scaffolding (hydra CLI, orchestration scripts) unblocked pending Phase 2 decisions.
+Application layer scaffolding (operator CLI, orchestration scripts) unblocked pending Phase 2 decisions.

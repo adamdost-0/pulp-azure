@@ -1666,7 +1666,7 @@ The application foundation under `src/bundle-tools/`, validation tests under `te
 
 ### Non-blocking corrections
 
-- Standardize CLI naming before P1-A2 starts: earlier backlog language says `hydra`, while the delivered slice exposes `bundle_tools`. P1-A2 remains the next actionable item, but it must explicitly either build on `bundle_tools` or introduce the `hydra` alias/scaffold.
+- Standardize CLI naming before P1-A2 starts: earlier backlog language used a project-specific CLI name, while the delivered slice exposes `bundle_tools`. P1-A2 remains the next actionable item, but it must explicitly either build on `bundle_tools` or introduce a neutral operator CLI scaffold.
 - Correct operator docs that still imply `PULP_PULL_POLICY=missing` or public images are the normal current path. The committed template and validation posture use placeholder private/internal images with `PULP_PULL_POLICY=never`; connected public-image testing must remain explicitly optional and not a high-side/AirGap validation path.
 - Clean trailing whitespace in `.squad/decisions.md` before merge hygiene gates are treated as clean.
 
