@@ -11,4 +11,15 @@ River owns validation for Azure deployment, Pulp bundle workflows, manual remova
 
 ## Learnings
 
+- 2026-05-05T01:45:46.172+00:00: Built deployment-skill review checklist for single bundled Pulp OCI container coverage. Validation must fail if the skill stops at container health, uses unpinned/latest images in automation, hardcodes CONTENT_ORIGIN, omits SECRET_KEY/admin reset/deploy-check/worker/plugin checks, ignores SELinux/FUSE/permission/name/port/disk/migration failures, or allows public pulls in air-gap mode. Battle-ready review evidence should include pinned image identity, redacted settings, run command, status JSON, deploy-check output, worker state, CLI auth verification, plugin setup, bundle import smoke evidence, and negative-test findings.
+
 Initial setup complete.
+- 2026-05-05T01:42:22.430+00:00: Phase 1 DoD review found partial automation only. `phase1_validation.py` validates evidence file shape, manifest integrity, one-way semantics, and harness static contracts, but does not automatically verify most control assertions, issue-specific capability proofs, or the backbone’s negative matrix execution evidence. #14 gate wording is strong, yet testability needs explicit dual-side pass criteria and executable checks proving low-side and high-side can each fail independently.
+- 2026-05-05T01:40:36.497+00:00: Added P1-A2 contract-first validation artifacts: new `tests/phase1/test_p1a2_execution.py` and deterministic fixtures under `tests/fixtures/p1a2/` covering execute-export parser/help, dry-run expectations, low-side-only boundary, feedback rejection, Pulp precondition handling, task failure/timeout propagation, evidence containment, and no high-to-low receipt fields. Full suite now intentionally blocks on missing `execute-export` implementation (`invalid choice: execute-export`), providing clear failure targets for Wash.
+- 2026-05-05T01:40:36.497+00:00: Closed P1-A2 validation lane after Wash landed `execute-export`. Tightened contract checks to require deterministic precondition/task exit codes (`3` and `4`), added fake-Pulp success validation for required evidence artifacts, and added explicit rejection coverage for non-`low-to-high` transfer direction.
+
+- **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to River; decisions.md updated.
+
+- **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to River; decisions.md updated.
+
+- **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to River; decisions.md updated.
