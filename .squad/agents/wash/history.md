@@ -40,3 +40,5 @@ Initial setup complete.
 Wash configured apt-get for Pulp and ran an apt-get package pull validation.
 - **2026-05-05T04:36:44.030+00:00**: Harness audit confirmed static wiring and script help paths are healthy (`harness/local/scripts/validate-static.sh` + script `--help` checks pass), but end-to-end automation is not CI-enforced because `.github/workflows/squad-ci.yml` is still placeholder-only and does not call harness validation or `tests/e2e/pulp-local-apt-smoke.sh`. Additional audit gaps: `validate-static.sh` stages fixtures under `/tmp` (non-repo path) and `evidence/test-evidence-apt.md` references `pulp-apt-deb-repo.png` while the repo only contains `evidence/pulp-apt-deb-repo.txt`.
 [2026-05-05T04:36:44Z] wash: Audited harness automation and validate-static; noted CI is placeholder and missing evidence PNG.
+
+- **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.

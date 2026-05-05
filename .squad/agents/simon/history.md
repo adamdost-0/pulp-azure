@@ -119,3 +119,5 @@ Simon owns security, compliance, and AirGap boundary review for a customer accel
 
 **Decision Artifact:**
 - `.squad/decisions/inbox/simon-p1-a2-control-review.md`
+
+- **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.

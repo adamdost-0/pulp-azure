@@ -25,3 +25,5 @@ Initial setup complete.
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to River; decisions.md updated.
 - 2026-05-05T04:36:44.030+00:00: Local harness static validation passes on Docker hosts (`validate-static.sh`), but disposable-session setup currently blocks at admin reset because `pulpcore-manager reset-admin-password` in `pulp/pulp:3.21` rejects `--username`; without `session.env`, downstream run/validate/capture scripts fail immediately and no `evidence/local-apt-smoke/` artifacts are created.
 [2026-05-05T04:36:44Z] river: Appended inbox decision and reported reset-admin-password compatibility block.
+
+- **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
