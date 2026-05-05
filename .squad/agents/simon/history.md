@@ -104,3 +104,18 @@ Simon owns security, compliance, and AirGap boundary review for a customer accel
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Simon; decisions.md updated.
 
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Simon; decisions.md updated.
+
+### 2026-05-05 — P1-A2 Execute-Export Control Review
+
+**Date:** 2026-05-05T01:40:36.497+00:00
+**Status:** ACCEPTED_WITH_CONTROL_CORRECTIONS
+**Scope:** `bundle_tools execute-export`, tests, and operator documentation
+
+**Learnings:**
+- P1-A2 is acceptable only as a low-side, image-free execution lane; it does not prove high-side import/publish, no-egress behavior, G2, or G3 readiness.
+- Dry-run must still prove the local low-side Pulp status precondition. Treating an unreachable Pulp endpoint as planned success masks a boundary/control failure.
+- Operator-supplied URLs are secret surfaces. Reject embedded credentials in `--pulp-url` and `upstreamUrl`, and redact Pulp error bodies before writing evidence or summaries.
+- Plan-file inputs need the same symlink-escape posture as evidence directories because imported plans can alter boundary semantics before execution.
+
+**Decision Artifact:**
+- `.squad/decisions/inbox/simon-p1-a2-control-review.md`

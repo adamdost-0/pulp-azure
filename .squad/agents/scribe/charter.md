@@ -31,9 +31,9 @@
 
 ## Model
 
-- **Preferred:** claude-haiku-4.5
+- **Preferred:** gpt-5-mini
 - **Rationale:** Scribe work is mechanical file operations and summarization.
-- **Fallback:** Fast chain - the coordinator handles fallback automatically
+- **Fallback:** GPT fast chain - the coordinator handles fallback automatically
 
 ## Collaboration
 

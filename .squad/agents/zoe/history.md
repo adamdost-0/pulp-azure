@@ -24,6 +24,8 @@
 
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Zoe; decisions.md updated.
 
+- **2026-05-05T01:40:36.497+00:00**: **P1-A2 lead gate APPROVED WITH SCOPE LIMITS.** `bundle_tools execute-export` is complete only for the narrow low-side image-free sync/export slice. Validation passed (34 unit tests, harness-static, diff check), River accepted validation, Simon accepted controls, and docs avoid G2/G3 overclaiming. G2 remains blocked until P1-A2 through P1-A6 pass together against the local harness; next actionable item is P1-A3 transfer manifest generation.
+
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Zoe; decisions.md updated.
 
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Zoe; decisions.md updated.

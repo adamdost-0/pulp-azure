@@ -31,9 +31,9 @@
 
 ## Model
 
-- **Preferred:** claude-haiku-4.5
+- **Preferred:** gpt-5-mini
 - **Rationale:** Monitoring is mechanical and should be cost-efficient.
-- **Fallback:** Fast chain - the coordinator handles fallback automatically
+- **Fallback:** GPT fast chain - the coordinator handles fallback automatically
 
 ## Collaboration
 

@@ -1,3 +1,27 @@
 {
-  "version": 1
+  "version": 1,
+  "defaultModel": "gpt-5.5",
+  "allowedModels": [
+    "gpt-5.5",
+    "gpt-5.3-codex",
+    "gpt-5-mini"
+  ],
+  "disallowedModelProviders": [
+    "anthropic"
+  ],
+  "taskModelDefaults": {
+    "analysis": "gpt-5.5",
+    "code": "gpt-5.3-codex",
+    "fast": "gpt-5-mini"
+  },
+  "agentModelOverrides": {
+    "zoe": "gpt-5.5",
+    "kaylee": "gpt-5.3-codex",
+    "wash": "gpt-5.3-codex",
+    "simon": "gpt-5.5",
+    "river": "gpt-5.3-codex",
+    "book": "gpt-5-mini",
+    "scribe": "gpt-5-mini",
+    "ralph": "gpt-5-mini"
+  }
 }
