@@ -1825,3 +1825,138 @@ The draft is directionally strong and consistent with the team's application-fir
 9. Expand Anti-Patterns with skipped admin reset, hardcoded hostnames in reusable automation, ignored SELinux labels, and readiness from `/status/` alone.
 10. Add an Evidence section listing required artifacts and redaction rules: pinned image/digest, redacted settings, exact run command, status JSON, deploy-check output, worker/plugin status, CLI verification, plugin setup confirmation, bundle import smoke, and negative-test notes.
 
+# Simon — P1-A2 Control Review
+
+**Date:** 2026-05-05T01:40:36.497+00:00  
+**Owner:** Simon  
+**Scope:** `bundle_tools execute-export` implementation, tests, and operator documentation  
+**Status:** ACCEPTED WITH CONTROL CORRECTIONS
+
+## Decision
+
+P1-A2 `execute-export` is accepted for the image-free low-side execution lane after applying tightly scoped security/control guardrail fixes.
+
+## Controls Confirmed
+
+- Low-side-only execution: `execute-export` rejects high-side configs and validates low-to-high workflow plans before Pulp calls.
+- No high-side import/publish in P1-A2: the command only checks low-side status, syncs repositories, resolves repository versions, creates/reuses an exporter, runs native export, and writes low-side evidence.
+- No high-to-low feedback path: plans with feedback enabled fail before execution, and stdout/evidence summaries omit receipt or return-channel fields.
+- No Azure deployment creep: implementation is local bundle tooling only; it does not deploy Azure resources or manage containers.
+- No public image/dependency pull behavior: `execute-export` does not pull images or install dependencies. Runtime image validation remains in the harness/static validation lane.
+- No custom reusable Pulp API wrapper: the implementation uses a private, command-scoped HTTP helper for native Pulp REST calls and does not introduce a reusable Pulp API abstraction or state store.
+- Evidence path containment: evidence directories reject symlink escape paths.
+- Plan input containment: plan files now reject symlink paths before loading.
+- Inline secret controls: config rejects inline secret-shaped fields and now rejects credential-bearing upstream URLs; `--pulp-url` also rejects embedded credentials.
+- Output/log redaction: evidence JSON, command logs, and Pulp error strings are redacted before persistence or summary output.
+- Deterministic failure behavior: dry-run no longer masks an unreachable Pulp status endpoint; this remains exit code 3 as a precondition failure.
+- Documentation scope: docs now state P1-A2 proves only the low-side image-free execution lane and must not be used as G2/G3 or high-side readiness evidence.
+
+## Corrections Applied
+
+1. Rejected embedded credentials in repository `upstreamUrl` and `--pulp-url`.
+2. Added redaction for evidence JSON, command log text, and Pulp HTTP error text.
+3. Rejected symlink plan-file inputs.
+4. Made dry-run with `--plan-file` fail when Pulp status is unreachable instead of returning success.
+5. Corrected operator docs to avoid high-side/full-workflow readiness overclaims.
+6. Added unit tests for the new guardrails.
+
+## Validation Evidence
+
+- `PYTHONPATH=src/bundle-tools python3 -m unittest discover -s tests -p 'test*.py'` — passed.
+- `python3 src/bundle-tools/phase1_validation.py harness-static .` — passed.
+- `git --no-pager diff --check` — passed.
+
+## Residual Scope Boundaries
+
+- Live Pulp runtime evidence remains externally blocked until approved private/pre-loaded images and environment-specific credentials are available.
+- High-side import, import-check, publish, APT client verification, no-egress proof, and G2/G3 claims remain out of P1-A2 scope.
+
+# Decision: Pulp Validation Failed
+
+**Date:** May 5, 2026
+**Owner:** Switch
+**Status:** BLOCKED
+
+The requested local Pulp deployment validation on `http://localhost:8080/pulp/api/v3/status/` failed. Pulp is not running, and port 8080 is currently occupied by qBittorrent WebUI. We must deploy the local Pulp container harness on a different port or stop existing services to proceed with automated e2e validation in the future.
+
+# Decision: Pulp API Validation Success
+
+**Date:** May 5, 2026
+**Owner:** Switch
+
+The local validation of the Pulp deployment manually started on port `8081` has succeeded. The `/pulp/api/v3/status/` endpoint returned a fully formed JSON object, indicating that the container workers have initialized fully and are ready for requests.
+
+*Note:* Playwright MCP tools were non-functional in the current environment configuration, so CLI `curl` fallback was utilized for validation as stipulated by MCP fallback procedures.
+
+# Decision: Pulp Port Conflict
+
+**Date:** May 5, 2026
+**Owner:** Trinity
+
+The local Pulp container deployment encountered a port conflict on port 8080. To proceed with the deployment validation without impacting other running services, the local environment port was shifted to `8081` via the `.env` file (`PULP_HTTPS_PORT=8081`).
+
+# Zoe — P1-A2 Lead Gate Review
+
+**Date:** 2026-05-05T01:40:36.497+00:00
+**Owner:** Zoe (Lead / Solution Architect)
+**Todo:** `p1-a2-lead-gate-review`
+**Status:** APPROVED WITH SCOPE LIMITS
+
+## Verdict
+
+P1-A2 is complete for the narrow low-side `execute-export` slice only.
+
+The implementation satisfies the approved execution contract: one operator-facing `bundle_tools execute-export` command validates low-side config and one-way plan boundaries, checks an already-running low-side Pulp API, runs native Pulp sync/export REST operations, returns sync/export task references plus repository version, TOC, and `output_file_info`, and writes low-side evidence.
+
+## Gate Inputs Reviewed
+
+- Zoe execution contract: approved scope is low-side export execution only.
+- Wash implementation map and runtime contract: implementation stays a thin command-scoped native Pulp REST executor and avoids Azure, manifest-generation, import/publish, state-store, and custom Pulp-wrapper scope.
+- River validation plan, execution tests, and closeout: image-free validation lane is accepted.
+- Simon control review: accepted after control corrections for one-way boundary, path containment, credential rejection, redaction, and dry-run precondition behavior.
+- Book docs update: operator docs describe `execute-export` as P1-A2 low-side only and avoid G2/G3 or high-side readiness claims.
+
+## Validation Evidence
+
+- `PYTHONPATH=src/bundle-tools python3 -m unittest discover -s tests -p 'test*.py'` — passed, 34 tests.
+- `python3 src/bundle-tools/phase1_validation.py harness-static .` — passed.
+- `git --no-pager diff --check` — passed.
+
+## Scope Approved
+
+Approved:
+
+1. Low-side config and one-way boundary validation.
+2. Pulp status precondition check against `--pulp-url`.
+3. Native Pulp repository/remote sync and task polling.
+4. Immutable repository version resolution.
+5. Native Pulp exporter creation/reuse and export task polling.
+6. Export resource readout using Pulp-native `toc_info` and `output_file_info`.
+7. Low-side evidence files for the execution contract.
+8. Deterministic failure handling for validation, precondition, Pulp task, timeout, and evidence-write failures.
+
+Not approved or claimed:
+
+- Azure deployment or Track B readiness.
+- Full low→high local e2e.
+- Transfer manifest generation or staged-media checksum validation.
+- High-side import-check, import, publish, APT client validation, or no-egress proof.
+- Any high-to-low receipt, acknowledgement, callback, or feedback channel.
+- Runtime proof using private/pre-loaded Pulp and APT client images.
+
+## G2 Decision
+
+G2 remains blocked.
+
+Reason: G2 requires P1-A2 through P1-A6 to pass together against the local harness with evidence collected. P1-A2 proves only the low-side `execute-export` command contract in the current image-free lane. Private/internal image configuration and the later manifest/import/publish slices are still required before G2 can unlock.
+
+## Next Actionable Phase 1 Item
+
+Start P1-A3: transfer manifest generation (`bundle_tools manifest create`).
+
+P1-A3 should consume P1-A2 export output/evidence, generate the handoff manifest from Pulp-native export metadata, preserve the low→high boundary, and avoid recomputing what Pulp already records unless needed for the physical media custody manifest.
+
+## Review Closeout
+
+P1-A2 is approved as complete for its narrow low-side slice. Do not broaden this decision into a full Phase 1, G2, G3, Azure, or AirGap readiness claim.
+
