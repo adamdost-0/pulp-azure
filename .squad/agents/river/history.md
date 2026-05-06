@@ -32,3 +32,6 @@ Initial setup complete.
 # 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
 
 - Scribe: merged phase-2 planning inbox into .squad/decisions.md
+- 2026-05-06T20:27:01.226+00:00: Drafted `docs/proposals/p2.0-p2.1-validation-gates.md` to make P2.0 command-contract checks and P2.1 manifest/custody controls immediately testable, including mandatory negatives (direction, traversal, checksum, symlink escape, missing export file, high-side egress, signature/waiver failures), Playwright evidence rules, and PR-static vs disconnected e2e lane split.
+
+- 2026-05-06T20:26:13.550+00:00: Scribe: merged your inbox decision into .squad/decisions/decisions.md and recorded orchestration logs.

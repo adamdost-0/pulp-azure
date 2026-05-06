@@ -142,3 +142,22 @@ Simon owns security, compliance, and AirGap boundary review for a customer accel
 # 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
 
 - Scribe: merged phase-2 planning inbox into .squad/decisions.md
+
+### 2026-05-06T20:27:01.226+00:00 — P2.1 Transfer Manifest and Custody Contract
+
+**Date:** 2026-05-06T20:27:01.226+00:00
+**Status:** CONTRACT_DRAFTED
+**Scope:** Phase 2 low-side to high-side Pulp transfer manifest, custody, signing waiver, and high-side import preconditions
+
+**Learnings:**
+- Phase 2 manifest validation should remain a thin boundary and custody control; native Pulp export TOC, task output, checksums, and import history remain authoritative for content semantics.
+- The transfer direction invariant is hard-coded as `low-to-high`; callback, telemetry return, sync, and automated high-side to low-side receipt concepts are fail-closed conditions.
+- Detached manifest signatures are the target control, but a local Phase 2 waiver can be reviewable if it records approver role, rationale, expiry, compensating controls, and `productionBlocker: true`.
+- High-side import must fail before Pulp `import-check` on path traversal, symlink, special file, missing custody record, signature failure, checksum or size mismatch, unexpected file, public high-side egress reference, or ambiguous duplicate import behavior.
+
+**Output Artifacts:**
+- `docs/proposals/p2.1-transfer-manifest-custody.md`
+- `schemas/transfer-manifest.schema.json`
+- `.squad/decisions/inbox/simon-p2-transfer-custody.md`
+
+- 2026-05-06T20:26:13.550+00:00: Scribe: merged your inbox decision into .squad/decisions/decisions.md and recorded orchestration logs.

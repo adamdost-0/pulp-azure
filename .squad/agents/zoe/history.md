@@ -41,7 +41,11 @@
 
 - **2026-05-06T20:19:21.141+00:00**: Prepared Phase 2 planning artifacts for direct main commit/push after confirming the change set was limited to planning docs, Squad histories/decisions, identity state, and Phase 2 skills; validation gate is `git diff --check` plus `harness/local/scripts/validate-static.sh` before push.
 
+- **2026-05-06T20:26:13.550+00:00**: CI strategy proposal created at `docs/proposals/ci-strategy.md`. Recommendation: clean up dead scaffold workflows, make `squad-ci.yml` the visible Tier 1 foundation gate, use the sandbox for local-first parity, add scheduled/trusted live Pulp e2e evidence in Tier 2, and defer SBOM/signing/provenance/offline high-side no-egress proof to Tier 3 enterprise trust. Decision written to `.squad/decisions/inbox/zoe-ci-strategy.md`.
+
 # 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
 
 - Scribe: merged phase-2 planning inbox into .squad/decisions.md
 - 2026-05-06T20:19:21.141+00:00: Zoe pushed Phase 2 planning workspace (commit 50923132d...). Handed off to scribe for logging.
+
+- 2026-05-06T20:26:13.550+00:00: Scribe: merged CI inbox items; created orchestration and session logs.
