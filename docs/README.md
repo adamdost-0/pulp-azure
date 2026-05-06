@@ -23,6 +23,7 @@ problem, proposed solution, key decisions, risks, and scope boundaries.
 | Document | Purpose |
 |---|---|
 | [Solution-As-Code Harness](proposals/pulp-solution-as-code.md) | Declarative solution files, disposable sessions, NAS-backed storage, and Playwright evidence as a first-class output. |
+| [Phase 2 Planning Memo](proposals/phase-2-planning.md) | Local low-to-high export/import rehearsal scope, decisions, gates, sequencing, and delegation plan. |
 
 ## Runbooks
 

@@ -26,3 +26,9 @@ Initial setup complete.
 - **2026-05-05T01:42:22Z**: Scribe merged decision inbox items related to Kaylee; decisions.md updated.
 
 - **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
+- **2026-05-06T05:33:10.822+00:00**: Phase 2 planning memo added at `docs/proposals/kaylee-phase-2-platform-planning-memo.md` defining required Azure Commercial/Government decisions for storage, PostgreSQL Flexible, AKS-first hosting, private endpoint/DNS topology, ACR digest-pinned private images, observability dual-path, NAS-to-cloud transition contract, and IaC module boundaries.
+- **2026-05-06T05:33:10.822+00:00**: Proposed spike order is capability matrix -> hosting proof -> private data plane -> private image supply chain -> observability dual-path -> NAS-to-cloud cutover rehearsal; this sequence reduces Government parity risk before deep workload investment.
+
+# 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
+
+- Scribe: merged phase-2 planning inbox into .squad/decisions.md

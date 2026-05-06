@@ -121,3 +121,24 @@ Simon owns security, compliance, and AirGap boundary review for a customer accel
 - `.squad/decisions/inbox/simon-p1-a2-control-review.md`
 
 - **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
+
+
+### 2026-05-06T05:33:10.822+00:00 — Phase 2 AirGap Security Planning
+
+**Date:** 2026-05-06T05:33:10.822+00:00
+**Status:** PLANNING_MEMO_CREATED
+**Scope:** Phase 2 disconnected low-side to high-side bundle movement, custody, signing, no-egress, private images, and evidence integrity
+
+**Learnings:**
+- Phase 2 should not start implementation until custody authority, signing authority, high-side private image source, no-egress evidence standard, and evidence export rules are confirmed.
+- `docs/architecture/rewrite-charter.md` already defines deferred production behavior for one-way low-side/high-side transfer, private images, no high-side public egress, repository signing, evidence signing, and key custody.
+- `docs/architecture/engineering-standards.md` makes negative tests mandatory for checksum mismatch, path traversal, public high-side egress, missing signatures, duplicate imports, and task failures.
+- `docs/runbooks/apt-0-to-100.md` identifies Phase 2 signing gaps: upstream Release verification with `--gpgkey` and apt publication signing through `--signing-service`.
+- `evidence/pulp-cli-e2e-20260506/README.md` proves local apt Pulp CLI flow, but its apt client log includes public Debian access; Phase 2 high-side evidence must prove the opposite boundary condition.
+
+**Decision Artifact:**
+- `.squad/decisions/inbox/simon-phase-2-planning.md`
+
+# 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
+
+- Scribe: merged phase-2 planning inbox into .squad/decisions.md

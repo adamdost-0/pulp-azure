@@ -90,3 +90,13 @@ Action items recommended to the team: standardize `PULP_PULL_POLICY` guidance, r
 - Documented that the local Pulp harness precondition is required and that private-image mirroring remains a blocker for live end-to-end runs; --dry-run and image-free tests are acceptable validation lanes.
 
 - **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
+
+2026-05-06T05:33:10.822+00:00 - Phase 2 planning started
+
+- Created Phase 2 planning memo at docs/runbooks/phase-2-planning.md
+- Created decision inbox note at .squad/decisions/inbox/book-phase-2-planning.md
+- Added skill guidance at .squad/skills/manual-transfer/SKILL.md
+
+# 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
+
+- Scribe: merged phase-2 planning inbox into .squad/decisions.md

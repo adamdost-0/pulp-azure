@@ -32,6 +32,8 @@ Initial setup complete.
 
 ## Learnings
 * **2026-05-05T00:00:00Z**: Successfully validated local integration with Pulp by creating a test file distribution. Crucially, the local pulp CLI configuration must be manually set up using `pulp config create` with the correct endpoint, and the admin password verified or reset via container execution (`pulpcore-manager reset-admin-password`) before CLI operations. Avoided inline credentials; standard Python `venv` handles `pulp-cli` flawlessly on local client platforms.
+* **2026-05-06T05:33:10.822+00:00**: Authored Phase 2 planning memo at `.squad/agents/wash/phase-2-planning-memo.md` defining the next Pulp-native step after local apt sandbox: generic core exporter/importer research, low/high rehearsal sequence, immutable repository version capture, custody manifest handoff, and idempotent create/update semantics with `pulp-cli` retained as the automation boundary.
+* **2026-05-06T05:33:10.822+00:00**: Phase 2 acceptance criteria now explicitly require structured evidence continuity (`evidence/<session-id>/README.md` + `manifest.json` + grouped artifact dirs), one-way low→high boundaries, and deterministic rerun outcomes across export/import/publish validation.
 
 ## 20260505T000000Z - Verified local pulp CLI
 
@@ -42,3 +44,7 @@ Wash configured apt-get for Pulp and ran an apt-get package pull validation.
 [2026-05-05T04:36:44Z] wash: Audited harness automation and validate-static; noted CI is placeholder and missing evidence PNG.
 
 - **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
+
+# 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
+
+- Scribe: merged phase-2 planning inbox into .squad/decisions.md

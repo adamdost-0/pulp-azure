@@ -27,3 +27,8 @@ Initial setup complete.
 [2026-05-05T04:36:44Z] river: Appended inbox decision and reported reset-admin-password compatibility block.
 
 - **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
+- 2026-05-06T05:33:10.822+00:00: Drafted `.squad/agents/river/phase-2-validation-planning-memo.md` to define Phase 2 validation gates across low/high disposable sessions, export/import rehearsal, high-side apt client validation, negative matrix, structured evidence package requirements (`evidence/<session-id>/` + `validate-evidence-structure.sh`), CI feasibility tiers, and 100% line/branch coverage discipline.
+
+# 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
+
+- Scribe: merged phase-2 planning inbox into .squad/decisions.md

@@ -36,3 +36,11 @@
 * **2026-05-05**: Updated team charter/instructions to enforce Playwright evidence requirements.
 
 - **2026-05-05T04:42:06.081Z**: Scribe: created orchestration log and session log for pulpcli-requirements-planning; merged inbox (none present) and recorded per-agent notes.
+
+- **2026-05-06T05:33:10.822+00:00**: Phase 2 planning memo created at `docs/proposals/phase-2-planning.md`. Smallest coherent next objective is a local two-side low-to-high Pulp export/import rehearsal with native Pulp exporter/importer, thin transfer manifest, high-side import-check/import/publish, isolated apt validation, and structured evidence. Azure implementation remains gated until this proof passes and product-owner questions on scale, signing, custody, identity, retention, and target high-side platform are answered.
+
+- **2026-05-06T20:19:21.141+00:00**: Prepared Phase 2 planning artifacts for direct main commit/push after confirming the change set was limited to planning docs, Squad histories/decisions, identity state, and Phase 2 skills; validation gate is `git diff --check` plus `harness/local/scripts/validate-static.sh` before push.
+
+# 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
+
+- Scribe: merged phase-2 planning inbox into .squad/decisions.md
