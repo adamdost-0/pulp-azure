@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=harness/local/scripts/common.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 usage() {
@@ -22,6 +23,7 @@ done
 
 resolve_container_runtime
 load_session_env "${PULP_SESSION_ID:-local-apt-smoke}"
+# shellcheck source=/dev/null
 source "${PULP_SESSION_DIR}/workflow/apt-source.env"
 mkdir -p "${EVIDENCE_DIR}"
 

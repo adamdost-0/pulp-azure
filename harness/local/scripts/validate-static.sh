@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=harness/local/scripts/common.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 require_cmd python3
@@ -10,6 +11,7 @@ bash -n "${SCRIPT_DIR}"/*.sh "${REPO_ROOT}/tests/e2e/pulp-local-apt-smoke.sh"
 
 log "checking Python syntax"
 python3 -m py_compile "${SCRIPT_DIR}/generate-deb-fixture.py"
+python3 -m py_compile "${HARNESS_DIR}/pulp_harness/__init__.py" "${HARNESS_DIR}/pulp_harness/generate_deb_fixture.py"
 
 log "checking JSON files"
 python3 -m json.tool "${REPO_ROOT}/schemas/pulp-solution.schema.json" >/dev/null

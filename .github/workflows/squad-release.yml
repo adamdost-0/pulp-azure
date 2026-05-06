@@ -1,34 +1,36 @@
 name: Squad Release
-# Project type was not detected — configure build, test, and release commands below
 
 on:
   push:
     branches: [main]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  release:
+  quality-gates:
+    uses: ./.github/workflows/squad-ci.yml
+
+  release-evidence:
+    name: Release evidence
     runs-on: ubuntu-latest
+    needs: quality-gates
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build and test
+      - name: Create immutable source manifest
         run: |
-          # TODO: Project type was not detected — add your build/test commands here
-          # Go:            go test ./...
-          # Python:        pip install -r requirements.txt && pytest
-          # .NET:          dotnet test
-          # Java (Maven):  mvn test
-          # Java (Gradle): ./gradlew test
-          echo "No build commands configured — update squad-release.yml"
+          {
+            printf 'commit=%s\n' "$(git rev-parse HEAD)"
+            printf 'tracked_files_sha256=\n'
+            git ls-files -z | xargs -0 sha256sum
+          } > release-manifest.txt
 
-      - name: Create release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # TODO: Add your release commands here (e.g., git tag, gh release create)
-          echo "No release commands configured — update squad-release.yml"
+      - name: Upload release manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-manifest
+          path: release-manifest.txt
+          if-no-files-found: error

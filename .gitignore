@@ -9,6 +9,12 @@
 # Python test/runtime state
 __pycache__/
 *.pyc
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+coverage.xml
+htmlcov/
 tests/.work/
 
 # Local disposable Pulp sessions and tool environments

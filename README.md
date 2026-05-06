@@ -21,6 +21,11 @@ For the full operator flow, see [docs/pulp-disposable-session.md](docs/pulp-disp
 
 The architecture rationale is in [docs/proposals/pulp-solution-as-code.md](docs/proposals/pulp-solution-as-code.md).
 
+The rewrite charter and engineering standards are now captured in:
+
+- [docs/rewrite-charter.md](docs/rewrite-charter.md)
+- [docs/engineering-standards.md](docs/engineering-standards.md)
+
 Static validation for the harness is available with:
 
 ```bash

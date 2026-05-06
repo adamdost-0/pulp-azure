@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=harness/local/scripts/common.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 usage() {
@@ -20,6 +21,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 load_session_env "${PULP_SESSION_ID:-local-apt-smoke}"
+# shellcheck source=/dev/null
 source "${PULP_SESSION_DIR}/workflow/apt-source.env"
 mkdir -p "${EVIDENCE_DIR}"
 
@@ -57,11 +59,11 @@ Pulp CLI and validated with apt-get from an isolated client container.
 
 ## Proof Points
 
-- `pulp-status.json` records Pulp readiness and plugin versions.
-- `fixture-metadata.json` records the deterministic package metadata and SHA-256.
-- `deb-sync.json`, `deb-publication.json`, and `deb-distribution.json` record Pulp CLI workflow outputs.
-- `apt-client.log` records apt-get update and install output from the isolated client.
-- `pulp-release-page.png` is a Playwright CLI screenshot of the published apt Release endpoint.
+- \`pulp-status.json\` records Pulp readiness and plugin versions.
+- \`fixture-metadata.json\` records the deterministic package metadata and SHA-256.
+- \`deb-sync.json\`, \`deb-publication.json\`, and \`deb-distribution.json\` record Pulp CLI workflow outputs.
+- \`apt-client.log\` records apt-get update and install output from the isolated client.
+- \`pulp-release-page.png\` is a Playwright CLI screenshot of the published apt Release endpoint.
 EOF_DESC
 
 python3 - "${EVIDENCE_DIR}" "${PULP_SESSION_ID}" "${release_url}" <<'PY'

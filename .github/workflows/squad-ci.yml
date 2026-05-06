@@ -1,7 +1,7 @@
 name: Squad CI
-# Project type was not detected — configure build/test commands below
 
 on:
+  workflow_call:
   pull_request:
     branches: [dev, preview, main, insider]
     types: [opened, synchronize, reopened]
@@ -12,17 +12,46 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  quality-gates:
+    name: Quality gates
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build and test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Python validation tools
         run: |
-          # TODO: Project type was not detected — add your build/test commands here
-          # Go:            go test ./...
-          # Python:        pip install -r requirements.txt && pytest
-          # .NET:          dotnet test
-          # Java (Maven):  mvn test
-          # Java (Gradle): ./gradlew test
-          echo "No build commands configured — update squad-ci.yml"
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+
+      - name: Check formatting
+        run: python -m ruff format --check harness/local/pulp_harness harness/local/scripts/generate-deb-fixture.py tests
+
+      - name: Lint Python
+        run: python -m ruff check harness/local/pulp_harness harness/local/scripts/generate-deb-fixture.py tests
+
+      - name: Type check Python
+        run: python -m mypy
+
+      - name: Test with 100 percent coverage
+        run: |
+          python -m coverage run -m pytest
+          python -m coverage report
+          python -m coverage xml
+
+      - name: Validate shell scripts
+        run: shellcheck -x harness/local/scripts/*.sh tests/e2e/*.sh
+
+      - name: Run static harness validation
+        run: harness/local/scripts/validate-static.sh
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+          if-no-files-found: error

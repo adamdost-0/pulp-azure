@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=harness/local/scripts/common.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 usage() {
@@ -99,6 +100,7 @@ log "running Pulp deploy check"
   > "${PULP_SESSION_DIR}/logs/deploy-check.log" 2>&1
 
 log "resetting disposable admin password"
+# shellcheck disable=SC2016
 "${PULP_CONTAINER_RUNTIME}" exec -e PULP_ADMIN_PASSWORD="${admin_password}" "${PULP_CONTAINER_NAME}" \
   bash -lc 'pulpcore-manager reset-admin-password --username admin --password "$PULP_ADMIN_PASSWORD"' \
   > "${PULP_SESSION_DIR}/logs/reset-admin-password.log" 2>&1

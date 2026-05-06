@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# shellcheck source=harness/local/scripts/common.sh
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 usage() {
@@ -35,6 +36,7 @@ if [[ "${force}" -ne 1 ]]; then
 fi
 
 if [[ -f "${PULP_SESSION_DIR}/session.env" ]]; then
+  # shellcheck source=/dev/null
   source "${PULP_SESSION_DIR}/session.env"
 else
   PULP_CONTAINER_NAME="${PULP_CONTAINER_NAME:-pulp-${PULP_SESSION_ID}}"
