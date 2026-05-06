@@ -14,7 +14,8 @@ production service. The implemented behavior is:
 3. Generate deterministic Debian apt fixture repositories.
 4. Sync, publish, and distribute Debian content through Pulp.
 5. Validate client consumption with `apt-get` inside an isolated container.
-6. Capture Playwright-backed evidence packages under `evidence/<session-id>/`.
+6. Capture Playwright-backed structured evidence packages under
+   `evidence/<session-id>/`.
 7. Preserve evidence while destroying disposable runtime state.
 
 The intended but deferred product behavior is:
@@ -87,4 +88,3 @@ is frozen:
    audit export format, and chain-of-custody requirements.
 10. Define migration: existing production data, cutover strategy, compatibility
     window, rollback plan, and acceptance tests.
-

@@ -45,8 +45,8 @@ def test_ar_member_formats_header_and_padding_branches() -> None:
 
 
 def test_tar_gz_is_deterministic_and_contains_expected_files() -> None:
-    archive_a = tar_gz({"./control": b"Package: pulp-smoke\n"})
-    archive_b = tar_gz({"./control": b"Package: pulp-smoke\n"})
+    archive_a = tar_gz({"./usr/": b"", "./usr/share/pulp-smoke/message.txt": b"payload"})
+    archive_b = tar_gz({"./usr/": b"", "./usr/share/pulp-smoke/message.txt": b"payload"})
 
     assert archive_a == archive_b
     with (
@@ -55,9 +55,13 @@ def test_tar_gz_is_deterministic_and_contains_expected_files() -> None:
     ):
         members = archive.getmembers()
 
-    assert [member.name for member in members] == ["./control"]
+    assert [member.name for member in members] == ["./usr", "./usr/share/pulp-smoke/message.txt"]
     assert members[0].mtime == 0
     assert members[0].uname == "root"
+    assert members[0].isdir()
+    assert members[0].mode == 0o755
+    assert members[1].isfile()
+    assert members[1].mode == 0o644
 
 
 def test_build_deb_is_deterministic_and_uses_expected_members() -> None:

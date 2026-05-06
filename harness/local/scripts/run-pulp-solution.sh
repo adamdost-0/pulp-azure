@@ -113,7 +113,34 @@ pulp_cmd deb repository sync \
   --remote "${PULP_REMOTE_NAME}" \
   --mirror \
   --no-optimize \
-  > "${workflow_dir}/deb-sync.json"
+  > "${workflow_dir}/deb-sync.json" \
+  2> "${workflow_dir}/deb-sync.log"
+
+pulp_cmd deb repository show \
+  --name "${PULP_REPOSITORY_NAME}" \
+  > "${workflow_dir}/deb-repository-after-sync.json"
+
+latest_version_href="$(python3 - "${workflow_dir}/deb-repository-after-sync.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+data = json.loads(Path(sys.argv[1]).read_text())
+href = data.get("latest_version_href")
+if not href:
+    raise SystemExit("latest repository version href not found after sync")
+print(href)
+PY
+)"
+
+pulp_cmd deb repository version list \
+  --repository "${PULP_REPOSITORY_NAME}" \
+  > "${workflow_dir}/deb-repository-versions.json"
+
+pulp_cmd deb content --type package list \
+  --repository-version "${latest_version_href}" \
+  > "${workflow_dir}/deb-package-content.json" \
+  2> "${workflow_dir}/deb-package-content.warnings.log"
 
 log "publishing immutable repository version"
 pulp_cmd deb publication create \

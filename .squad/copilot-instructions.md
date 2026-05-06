@@ -44,3 +44,31 @@ If you make a decision that affects other team members, write it to:
 .squad/decisions/inbox/copilot-{brief-slug}.md
 ```
 The Scribe will merge it into the shared decisions file.
+
+## Structured Evidence
+
+Every validation or e2e run that writes evidence must use the project evidence
+framework:
+
+```text
+evidence/<session-id>/
+├── README.md
+├── manifest.json
+├── apt/
+├── fixture/
+├── logs/
+├── pulp/
+├── report/
+└── screenshots/
+```
+
+`README.md` is the reviewer entry point. It must include an executive summary,
+proof chain, key resource IDs or hrefs, excerpts, and an artifact table.
+`manifest.json` must index every non-root artifact by group with a description.
+Do not place flat, unindexed files directly under an evidence package.
+
+Before claiming evidence is complete, run:
+
+```bash
+harness/local/scripts/validate-evidence-structure.sh
+```

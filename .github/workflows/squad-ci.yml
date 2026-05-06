@@ -44,10 +44,13 @@ jobs:
           python -m coverage xml
 
       - name: Validate shell scripts
-        run: shellcheck -x harness/local/scripts/*.sh tests/e2e/*.sh
+        run: shellcheck -x harness/local/scripts/*.sh harness/sandbox/scripts/*.sh tests/e2e/*.sh .githooks/*
 
       - name: Run static harness validation
         run: harness/local/scripts/validate-static.sh
+
+      - name: Validate evidence package structure
+        run: harness/local/scripts/validate-evidence-structure.sh
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4

@@ -5,9 +5,15 @@ set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 require_cmd python3
+PULP_STORAGE_ROOT="${PULP_STORAGE_ROOT:-${DEFAULT_PULP_STORAGE_ROOT}}"
+PULP_STORAGE_ROOT="$(resolve_repo_path "${PULP_STORAGE_ROOT}")"
 
 log "checking shell syntax"
-bash -n "${SCRIPT_DIR}"/*.sh "${REPO_ROOT}/tests/e2e/pulp-local-apt-smoke.sh"
+bash -n \
+  "${SCRIPT_DIR}"/*.sh \
+  "${REPO_ROOT}/harness/sandbox/scripts/"*.sh \
+  "${REPO_ROOT}/.githooks/"* \
+  "${REPO_ROOT}/tests/e2e/pulp-local-apt-smoke.sh"
 
 log "checking Python syntax"
 python3 -m py_compile "${SCRIPT_DIR}/generate-deb-fixture.py"
@@ -16,6 +22,13 @@ python3 -m py_compile "${HARNESS_DIR}/pulp_harness/__init__.py" "${HARNESS_DIR}/
 log "checking JSON files"
 python3 -m json.tool "${REPO_ROOT}/schemas/pulp-solution.schema.json" >/dev/null
 python3 -m json.tool "${REPO_ROOT}/solutions/local-apt-smoke.json" >/dev/null
+
+log "checking sandbox contract"
+test -f "${REPO_ROOT}/harness/sandbox/Dockerfile"
+grep -q 'pulp-cli-deb==0.4.3' "${REPO_ROOT}/harness/sandbox/requirements.txt"
+
+log "checking evidence structure"
+"${SCRIPT_DIR}/validate-evidence-structure.sh"
 
 log "checking solution contract"
 python3 - "${REPO_ROOT}/solutions/local-apt-smoke.json" <<'PY'
@@ -34,7 +47,7 @@ if "pulp_deb" not in solution["pulp"]["requiredPlugins"]:
     raise SystemExit("solution must require pulp_deb")
 PY
 
-fixture_root="${TMPDIR:-/tmp}/pulp-harness-static-fixture"
+fixture_root="${PULP_STATIC_FIXTURE_ROOT:-${PULP_STORAGE_ROOT}/static-validation}"
 rm -rf "${fixture_root}"
 mkdir -p "${fixture_root}"
 
@@ -71,7 +84,7 @@ if command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1; 
   log "checking Compose rendering with Docker Compose"
   PULP_IMAGE=pulp/pulp:3.21 \
   PULP_CONTAINER_NAME=pulp-local-apt-smoke \
-  PULP_SESSION_DIR="${REPO_ROOT}/.runtime/pulp-sessions/local-apt-smoke" \
+  PULP_SESSION_DIR="${PULP_STORAGE_ROOT}/pulp-sessions/local-apt-smoke" \
   PULP_HTTP_HOST_PORT=18080 \
   PULP_CONTAINER_HTTP_PORT=80 \
   PULP_PULL_POLICY=missing \
@@ -80,7 +93,7 @@ elif command -v docker-compose >/dev/null 2>&1; then
   log "checking Compose rendering with docker-compose"
   PULP_IMAGE=pulp/pulp:3.21 \
   PULP_CONTAINER_NAME=pulp-local-apt-smoke \
-  PULP_SESSION_DIR="${REPO_ROOT}/.runtime/pulp-sessions/local-apt-smoke" \
+  PULP_SESSION_DIR="${PULP_STORAGE_ROOT}/pulp-sessions/local-apt-smoke" \
   PULP_HTTP_HOST_PORT=18080 \
   PULP_CONTAINER_HTTP_PORT=80 \
   PULP_PULL_POLICY=missing \

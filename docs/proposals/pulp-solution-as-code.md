@@ -14,9 +14,10 @@ still using Pulp's native CLI and plugins as the source of truth.
 ## Proposed Architecture
 
 Create a local harness under `harness/local/` that accepts a declarative solution
-file from `solutions/`, creates a fresh Pulp session under `.runtime/`, configures
-Pulp through `pulp-cli`, validates client consumption through `apt-get`, and
-writes Playwright-backed evidence under `evidence/`.
+file from `solutions/`, creates a fresh Pulp session under the configured
+runtime storage root, configures Pulp through `pulp-cli`, validates client
+consumption through `apt-get`, and writes Playwright-backed evidence under
+`evidence/`.
 
 The v1 workflow is deliberately small:
 
@@ -32,6 +33,8 @@ The v1 workflow is deliberately small:
 ## What Changes
 
 - Pulp sessions become disposable by default.
+- Development Pulp volumes live under the configured NAS-backed storage root by
+  default instead of the repository checkout.
 - Solution definitions live in `solutions/` and are validated against a schema in
   `schemas/`.
 - Harness scripts centralize runtime selection and avoid direct host apt changes.

@@ -19,7 +19,7 @@ Use this skill when validating local container harnesses for Pulp, air-gap trans
 4. **Workflow smoke:** Run deterministic fixture generation, manifest generation, checksum validation, sync, publish, and client-consumption checks.
 5. **Disconnected path:** Run separate low-side/high-side instances. Verify export, staged transfer, checksum manifest, import-check, import, publish, and high-side APT client consumption with no fixture egress.
 6. **Negative tests:** Prove failures for missing images, public/tag-only image references, digest mismatch, missing prerequisites, checksum mismatch, high-side egress, import-check failure, duplicate import, task failure, and client publication failure.
-7. **Evidence:** Keep command logs, status JSON, task JSON, manifests, import-check output, container logs, and client verification output. Sanitize before committing or sharing.
+7. **Evidence:** Use the structured evidence framework under `evidence/<session-id>/`: `README.md`, `manifest.json`, and grouped `apt/`, `fixture/`, `logs/`, `pulp/`, `report/`, and `screenshots/` directories. Keep command logs, status JSON, task JSON, manifests, import-check output, container logs, and client verification output inside those groups. Sanitize before committing or sharing, then run `harness/local/scripts/validate-evidence-structure.sh`.
 
 ## Docker-Specific Guidance
 
@@ -42,4 +42,5 @@ Use this skill when validating local container harnesses for Pulp, air-gap trans
 - Running high-side validation with public registry pulls or public package source access.
 - Leaving Podman hard-coding in scripts intended to validate Docker localhost paths.
 - Treating generated runtime evidence as committed project documentation without sanitization.
+- Dropping flat, unindexed files directly into `evidence/` or `evidence/<session-id>/`.
 - Staging static-check fixtures under `/tmp`; prefer repo-local disposable paths (for example `.runtime/`) so validation works in locked-down automation runners and remains auditable.

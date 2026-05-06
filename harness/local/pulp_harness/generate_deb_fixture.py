@@ -75,13 +75,20 @@ def tar_gz(files: Mapping[str, bytes]) -> bytes:
     ):
         for path, payload in files.items():
             info = tarfile.TarInfo(path)
-            info.size = len(payload)
             info.mtime = FIXED_TIMESTAMP
             info.uid = 0
             info.gid = 0
             info.uname = "root"
             info.gname = "root"
-            archive.addfile(info, io.BytesIO(payload))
+            if path.endswith("/"):
+                info.type = tarfile.DIRTYPE
+                info.mode = 0o755
+                info.size = 0
+                archive.addfile(info)
+            else:
+                info.mode = 0o644
+                info.size = len(payload)
+                archive.addfile(info, io.BytesIO(payload))
     return buffer.getvalue()
 
 
@@ -97,7 +104,14 @@ Description: {summary}
 """.encode()
     data_message = f"{package} {version} generated for disposable Pulp apt validation.\n".encode()
     control_tar = tar_gz({"./control": control})
-    data_tar = tar_gz({f"./usr/share/{package}/message.txt": data_message})
+    data_tar = tar_gz(
+        {
+            "./usr/": b"",
+            "./usr/share/": b"",
+            f"./usr/share/{package}/": b"",
+            f"./usr/share/{package}/message.txt": data_message,
+        },
+    )
     return b"!<arch>\n" + b"".join(
         [
             ar_member("debian-binary", b"2.0\n"),

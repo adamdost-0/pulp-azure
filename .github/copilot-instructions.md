@@ -88,4 +88,4 @@ Every prompt file should include YAML frontmatter with the following fields:
 - [Tool Configuration](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode#_agent-mode-tools)
 
 ## Project Specific Directives
-- **Test Evidence Rule**: For all tests, Copilot *must* generate steps or code to capture evidence using the Playwright CLI and log it into the `evidence/` folder with a clear description.
+- **Structured Test Evidence Rule**: For all tests, Copilot *must* generate steps or code to capture evidence using the Playwright CLI and store it as a structured package under `evidence/<session-id>/`. The package must use `README.md` as the human-readable entry point, `manifest.json` as the machine-readable index, and grouped `apt/`, `fixture/`, `logs/`, `pulp/`, `report/`, and `screenshots/` directories. Do not drop flat, unindexed artifacts into `evidence/`; run `harness/local/scripts/validate-evidence-structure.sh` before claiming evidence is complete.

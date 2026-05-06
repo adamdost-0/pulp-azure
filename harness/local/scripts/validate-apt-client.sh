@@ -25,7 +25,7 @@ resolve_container_runtime
 load_session_env "${PULP_SESSION_ID:-local-apt-smoke}"
 # shellcheck source=/dev/null
 source "${PULP_SESSION_DIR}/workflow/apt-source.env"
-mkdir -p "${EVIDENCE_DIR}"
+apt_client_log="${PULP_SESSION_DIR}/workflow/apt-client.log"
 
 trusted_option=""
 if [[ "${APT_TRUSTED}" == "true" ]]; then
@@ -49,9 +49,9 @@ cat '/usr/share/${FIXTURE_PACKAGE}/message.txt'
 ")
 
 log "validating apt-get client consumption in ${PULP_APT_CLIENT_IMAGE}"
-"${PULP_CONTAINER_RUNTIME}" "${client_args[@]}" 2>&1 | tee "${EVIDENCE_DIR}/apt-client.log"
+"${PULP_CONTAINER_RUNTIME}" "${client_args[@]}" 2>&1 | tee "${apt_client_log}"
 
-python3 - "${EVIDENCE_DIR}/apt-client.log" "${FIXTURE_PACKAGE}" <<'PY'
+python3 - "${apt_client_log}" "${FIXTURE_PACKAGE}" <<'PY'
 import sys
 from pathlib import Path
 
@@ -65,6 +65,6 @@ PY
 
 cat <<EOF_DONE
 apt-get validation completed.
-Evidence log: ${EVIDENCE_DIR}/apt-client.log
+Evidence source log: ${apt_client_log}
 Next: harness/local/scripts/capture-evidence.sh --session-id ${PULP_SESSION_ID}
 EOF_DONE

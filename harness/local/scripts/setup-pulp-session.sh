@@ -102,7 +102,7 @@ log "running Pulp deploy check"
 log "resetting disposable admin password"
 # shellcheck disable=SC2016
 "${PULP_CONTAINER_RUNTIME}" exec -e PULP_ADMIN_PASSWORD="${admin_password}" "${PULP_CONTAINER_NAME}" \
-  bash -lc 'pulpcore-manager reset-admin-password --username admin --password "$PULP_ADMIN_PASSWORD"' \
+  bash -lc 'pulpcore-manager reset-admin-password --password "$PULP_ADMIN_PASSWORD"' \
   > "${PULP_SESSION_DIR}/logs/reset-admin-password.log" 2>&1
 
 python3 - "${PULP_SESSION_DIR}/workflow/status.json" <<'PY'

@@ -1,0 +1,8 @@
+pulp-cli[pygments]==0.37.1
+pulp-cli-deb==0.4.3
+coverage[toml]==7.6.10
+mypy==1.14.1
+pytest==8.3.4
+ruff==0.9.3
+shellcheck-py==0.10.0.1
+

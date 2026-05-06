@@ -14,6 +14,6 @@ harness/local/scripts/capture-evidence.sh --session-id "${SESSION_ID}"
 cat <<EOF_DONE
 Disposable Pulp apt smoke test completed.
 Session: ${SESSION_ID}
-Evidence: evidence/${SESSION_ID}/description.md
+Evidence: evidence/${SESSION_ID}/README.md
 Teardown: harness/local/scripts/destroy-pulp-session.sh --session-id ${SESSION_ID} --force
 EOF_DONE

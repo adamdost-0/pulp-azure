@@ -25,7 +25,8 @@ Correctness, auditability, and reproducibility outrank delivery speed.
 4. Property tests must cover manifest parsing, path containment, hashing,
    canonicalization, idempotency, and state transitions.
 5. Integration tests must use disposable Pulp instances and isolated clients.
-6. End-to-end tests must capture Playwright evidence under `evidence/`.
+6. End-to-end tests must capture Playwright evidence as structured packages
+   under `evidence/<session-id>/`.
 7. Negative tests are mandatory for checksum mismatch, path traversal, public
    high-side egress, missing signatures, duplicate imports, and task failures.
 8. Tests may not mutate host apt configuration.
@@ -57,7 +58,8 @@ Every pull request and release candidate must pass:
 4. Transfer manifests must validate direction, path containment, size, and
    SHA-256 before import.
 5. Evidence must include Pulp task outputs, manifest checks, client validation,
-   and Playwright artifacts.
+   and Playwright artifacts in the structured `README.md` plus grouped
+   `manifest.json`, `apt/`, `fixture/`, `logs/`, `pulp/`, `report/`, and
+   `screenshots/` framework.
 6. Secrets, admin passwords, CLI profiles, private keys, and generated Pulp
    settings must never be committed.
-

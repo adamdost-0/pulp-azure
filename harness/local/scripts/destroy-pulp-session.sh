@@ -27,8 +27,11 @@ resolve_container_runtime
 session_id="${PULP_SESSION_ID:-local-apt-smoke}"
 safe_id "${session_id}"
 PULP_SESSION_ID="${session_id}"
-PULP_SESSION_ROOT="${PULP_SESSION_ROOT:-.runtime/pulp-sessions}"
-PULP_SESSION_DIR="${REPO_ROOT}/${PULP_SESSION_ROOT}/${PULP_SESSION_ID}"
+PULP_STORAGE_ROOT="${PULP_STORAGE_ROOT:-${DEFAULT_PULP_STORAGE_ROOT}}"
+PULP_STORAGE_ROOT="$(resolve_repo_path "${PULP_STORAGE_ROOT}")"
+PULP_SESSION_ROOT="${PULP_SESSION_ROOT:-${PULP_STORAGE_ROOT}/pulp-sessions}"
+PULP_SESSION_ROOT="$(resolve_repo_path "${PULP_SESSION_ROOT}")"
+PULP_SESSION_DIR="${PULP_SESSION_ROOT}/${PULP_SESSION_ID}"
 
 if [[ "${force}" -ne 1 ]]; then
   read -r -p "Destroy disposable session ${PULP_SESSION_ID}? [y/N] " answer
@@ -55,11 +58,13 @@ fi
 if [[ -d "${PULP_SESSION_DIR}" ]]; then
   if ! rm -rf "${PULP_SESSION_DIR}" 2>/dev/null; then
     log "host cleanup failed; retrying through a scoped cleanup container"
-    cleanup_rel="${PULP_SESSION_ROOT}/${PULP_SESSION_ID}"
+    cleanup_parent="$(dirname "${PULP_SESSION_DIR}")"
+    cleanup_name="$(basename "${PULP_SESSION_DIR}")"
+    volume_suffix="$(runtime_volume_suffix)"
     "${PULP_CONTAINER_RUNTIME}" run --rm \
-      --volume "${REPO_ROOT}:/workspace" \
+      --volume "${cleanup_parent}:/cleanup-root${volume_suffix}" \
       "${PULP_CLEANUP_IMAGE}" \
-      sh -c "rm -rf '/workspace/${cleanup_rel}'"
+      sh -c "rm -rf '/cleanup-root/${cleanup_name}'"
   fi
 fi
 

@@ -1,0 +1,1 @@
+deb [trusted=yes] http://host.docker.internal:18180/pulp/content/apt/local-smoke stable main

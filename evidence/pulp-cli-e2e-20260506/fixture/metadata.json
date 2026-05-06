@@ -1,0 +1,18 @@
+{
+  "package": "pulp-smoke",
+  "version": "0.1.0",
+  "architecture": "amd64",
+  "distribution": "stable",
+  "component": "main",
+  "deb": {
+    "path": "/home/adamdost/synology/appconfig/pulp-azure/pulp-sessions/pulp-cli-e2e-20260506/upstream-repo/pool/main/p/pulp-smoke/pulp-smoke_0.1.0_amd64.deb",
+    "relativePath": "pool/main/p/pulp-smoke/pulp-smoke_0.1.0_amd64.deb",
+    "size": 660,
+    "sha256": "cd00fdf14a8aef3974d4a121a967c74b3405c2a3b93cc3f6b64e6bc988a59c0e"
+  },
+  "indexes": [
+    "/home/adamdost/synology/appconfig/pulp-azure/pulp-sessions/pulp-cli-e2e-20260506/upstream-repo/dists/stable/main/binary-amd64/Packages",
+    "/home/adamdost/synology/appconfig/pulp-azure/pulp-sessions/pulp-cli-e2e-20260506/upstream-repo/dists/stable/main/binary-amd64/Packages.gz",
+    "/home/adamdost/synology/appconfig/pulp-azure/pulp-sessions/pulp-cli-e2e-20260506/upstream-repo/dists/stable/Release"
+  ]
+}
