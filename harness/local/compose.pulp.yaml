@@ -1,0 +1,16 @@
+services:
+  pulp:
+    image: ${PULP_IMAGE:?set PULP_IMAGE}
+    container_name: ${PULP_CONTAINER_NAME:?set PULP_CONTAINER_NAME}
+    pull_policy: ${PULP_PULL_POLICY:-missing}
+    ports:
+      - "${PULP_HTTP_HOST_PORT:-18080}:${PULP_CONTAINER_HTTP_PORT:-80}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ${PULP_SESSION_DIR:?set PULP_SESSION_DIR}/settings:/etc/pulp
+      - ${PULP_SESSION_DIR:?set PULP_SESSION_DIR}/pulp_storage:/var/lib/pulp
+      - ${PULP_SESSION_DIR:?set PULP_SESSION_DIR}/pgsql:/var/lib/pgsql
+      - ${PULP_SESSION_DIR:?set PULP_SESSION_DIR}/containers:/var/lib/containers
+      - ${PULP_SESSION_DIR:?set PULP_SESSION_DIR}/container_build:/var/lib/pulp/.local/share/containers
+    restart: "no"

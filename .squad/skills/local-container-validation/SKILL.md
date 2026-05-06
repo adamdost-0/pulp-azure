@@ -3,7 +3,7 @@ name: "local-container-validation"
 description: "Validate local Pulp container harnesses without confusing daemon health for workflow readiness"
 domain: "quality"
 confidence: "medium"
-last_updated: "2026-05-04T21:42:09.450+00:00"
+last_updated: "2026-05-05T04:36:44.030+00:00"
 ---
 
 ## Context
@@ -15,6 +15,7 @@ Use this skill when validating local container harnesses for Pulp, air-gap trans
 1. **Host prerequisites:** Confirm Docker daemon and Docker Compose are available. Confirm required host tools for the path under test. Fixture and manifest scripts require `python3`; do not require host `ar` because fixture `.deb` archives are built with Python stdlib.
 2. **Static container config:** Render Compose configuration with explicit environment values. Treat unresolved variables, public high-side image references, and tag-only references as failures.
 3. **Single-service readiness:** Start with unique container names and ports. Verify localhost health endpoints, online workers, and expected application/plugin versions. Stop and clean up containers and workdirs after the check.
+   - Include an admin-reset command compatibility check for the pinned image (`pulpcore-manager reset-admin-password --help` / invocation contract). A passing `/status/` endpoint is not enough if setup cannot finish and emit session metadata.
 4. **Workflow smoke:** Run deterministic fixture generation, manifest generation, checksum validation, sync, publish, and client-consumption checks.
 5. **Disconnected path:** Run separate low-side/high-side instances. Verify export, staged transfer, checksum manifest, import-check, import, publish, and high-side APT client consumption with no fixture egress.
 6. **Negative tests:** Prove failures for missing images, public/tag-only image references, digest mismatch, missing prerequisites, checksum mismatch, high-side egress, import-check failure, duplicate import, task failure, and client publication failure.
@@ -37,6 +38,8 @@ Use this skill when validating local container harnesses for Pulp, air-gap trans
 ## Anti-Patterns
 
 - Declaring readiness from `docker --version` or a single `/status/` response.
+- Assuming `reset-admin-password` flags are stable across Pulp images; command incompatibility can silently break the whole disposable workflow before evidence capture.
 - Running high-side validation with public registry pulls or public package source access.
 - Leaving Podman hard-coding in scripts intended to validate Docker localhost paths.
 - Treating generated runtime evidence as committed project documentation without sanitization.
+- Staging static-check fixtures under `/tmp`; prefer repo-local disposable paths (for example `.runtime/`) so validation works in locked-down automation runners and remains auditable.

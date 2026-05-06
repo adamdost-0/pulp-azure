@@ -80,4 +80,4 @@ Status: SKIPPED (no explicit local squad policy requiring commit)
 - No history summarization needed
 - All .squad/ artifacts written
 
-READY FOR NEXT PHASE: Phase 1 application layer scaffolding (hydra CLI).
+READY FOR NEXT PHASE: Phase 1 application layer scaffolding (operator CLI).

@@ -20,6 +20,7 @@
 - Test the workflow customers will actually run, including manual steps.
 - Turn assumptions into executable or repeatable checks.
 - Validate success, failure, recovery, and audit evidence.
+- **For all tests, capture evidence using the Playwright CLI and log it into the `evidence/` folder with a clear description.**
 
 ## Boundaries
 

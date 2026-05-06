@@ -1,0 +1,12 @@
+HTTP/1.1 404 Not Found
+connection: keep-alive
+content-length: 9
+content-security-policy: default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; object-src 'none'; form-action 'self'; frame-src 'self' blob:; frame-ancestors 'self';
+content-type: text/plain; charset=UTF-8
+cross-origin-opener-policy: same-origin
+date: Tue, 05 May 2026 03:48:14 GMT
+referrer-policy: same-origin
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+x-xss-protection: 1; mode=block
+

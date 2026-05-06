@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/pulp-azure/schemas/pulp-solution.schema.json",
+  "title": "Disposable Pulp Solution",
+  "type": "object",
+  "required": ["name", "fixture", "apt", "pulp", "evidence"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,62}$"
+    },
+    "description": {
+      "type": "string"
+    },
+    "pulp": {
+      "type": "object",
+      "required": ["repositoryName", "remoteName", "publicationName", "distributionName", "requiredPlugins"],
+      "additionalProperties": false,
+      "properties": {
+        "repositoryName": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "remoteName": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "publicationName": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "distributionName": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "requiredPlugins": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "pattern": "^pulp_[a-z0-9_]+$"}
+        }
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "required": ["package", "version", "architecture", "summary"],
+      "additionalProperties": false,
+      "properties": {
+        "package": {"type": "string", "pattern": "^[a-z0-9][a-z0-9+.-]+$"},
+        "version": {"type": "string", "pattern": "^[0-9][A-Za-z0-9.+:~-]*$"},
+        "architecture": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+        "summary": {"type": "string"}
+      }
+    },
+    "apt": {
+      "type": "object",
+      "required": ["distribution", "component", "basePath", "trusted"],
+      "additionalProperties": false,
+      "properties": {
+        "distribution": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "component": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "basePath": {"type": "string", "pattern": "^[a-zA-Z0-9_./-]+$"},
+        "trusted": {"type": "boolean"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["directory"],
+      "additionalProperties": false,
+      "properties": {
+        "directory": {"type": "string", "pattern": "^[a-zA-Z0-9_./-]+$"}
+      }
+    }
+  }
+}

@@ -86,3 +86,6 @@ Every prompt file should include YAML frontmatter with the following fields:
 - [Prompt Files Documentation](https://code.visualstudio.com/docs/copilot/customization/prompt-files#_prompt-file-format)
 - [Awesome Copilot Prompt Files](https://github.com/github/awesome-copilot/tree/main/prompts)
 - [Tool Configuration](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode#_agent-mode-tools)
+
+## Project Specific Directives
+- **Test Evidence Rule**: For all tests, Copilot *must* generate steps or code to capture evidence using the Playwright CLI and log it into the `evidence/` folder with a clear description.
