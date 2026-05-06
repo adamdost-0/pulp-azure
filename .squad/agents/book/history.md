@@ -100,3 +100,11 @@ Action items recommended to the team: standardize `PULP_PULL_POLICY` guidance, r
 # 2026-05-06T05:33:10.822+00:00 - Phase 2 planning inbox merged into .squad/decisions.md
 
 - Scribe: merged phase-2 planning inbox into .squad/decisions.md
+
+2026-05-06T20:27:01.226+00:00 - P2.1 manifest & custody review (Book)
+
+- Verdict: APPROVE from Customer Enablement.
+- Rationale: Custody fields, waiver representation, evidence outputs and gating are sufficiently defined for operator runbooks. Non-blocking clarifications requested: (1) example custody-record.json and template, (2) explicit waiver approver roles and signature verification procedure ref examples, (3) link custody-record schema and sample in runbooks.
+- Action items: create docs/runbooks/phase-2-manual-transfer-checklist.md (custody template), add custody-record example in docs/runbooks, and add waiver sign-off template in docs/runbooks/phase-2-evidence-review.md.
+
+- 2026-05-06T20:27:01.226+00:00: Scribe: merged decision inbox items into .squad/decisions.md (4 files) and created orchestration/session logs.

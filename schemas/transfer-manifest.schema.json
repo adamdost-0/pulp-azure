@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/pulp-azure/schemas/transfer-manifest.schema.json",
+  "title": "Phase 2 Transfer Manifest",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "manifestId",
+    "direction",
+    "createdAt",
+    "createdByRole",
+    "source",
+    "target",
+    "repository",
+    "boundaryControls",
+    "files",
+    "signing",
+    "custodyRecordPath",
+    "evidenceRefs"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {"const": "p2-transfer-manifest/v1"},
+    "manifestId": {"type": "string", "pattern": "^[a-zA-Z0-9_.:-]{3,128}$"},
+    "direction": {"const": "low-to-high"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "createdByRole": {"type": "string", "pattern": "^[a-zA-Z0-9_.:-]{3,128}$"},
+    "source": {
+      "type": "object",
+      "required": ["side", "environmentRef"],
+      "additionalProperties": false,
+      "properties": {
+        "side": {"const": "low"},
+        "environmentRef": {"type": "string", "minLength": 1, "maxLength": 256}
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": ["side", "environmentRef"],
+      "additionalProperties": false,
+      "properties": {
+        "side": {"const": "high"},
+        "environmentRef": {"type": "string", "minLength": 1, "maxLength": 256}
+      }
+    },
+    "repository": {
+      "type": "object",
+      "required": ["ecosystem", "name", "repositoryVersionHref"],
+      "additionalProperties": false,
+      "properties": {
+        "ecosystem": {"const": "apt"},
+        "name": {"type": "string", "pattern": "^[a-zA-Z0-9_.-]+$"},
+        "repositoryVersionHref": {"type": "string", "pattern": "^/pulp/api/v3/.+/versions/[0-9]+/?$"},
+        "exportHref": {"type": "string", "pattern": "^/pulp/api/v3/.+/?$"},
+        "exportTaskHref": {"type": "string", "pattern": "^/pulp/api/v3/tasks/[a-zA-Z0-9-]+/?$"}
+      }
+    },
+    "boundaryControls": {
+      "type": "object",
+      "required": [
+        "highToLowReceiptAllowed",
+        "callbackAllowed",
+        "telemetryReturnAllowed",
+        "syncAllowed"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "highToLowReceiptAllowed": {"const": false},
+        "callbackAllowed": {"const": false},
+        "telemetryReturnAllowed": {"const": false},
+        "syncAllowed": {"const": false}
+      }
+    },
+    "pulpOutputs": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/pulpOutput"}
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/fileEntry"}
+    },
+    "signing": {
+      "oneOf": [
+        {"$ref": "#/$defs/signedManifest"},
+        {"$ref": "#/$defs/phase2Waiver"}
+      ]
+    },
+    "custodyRecordPath": {"$ref": "#/$defs/relativePath"},
+    "evidenceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/relativePath"},
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "allOf": [
+        {"not": {"pattern": "^/"}},
+        {"not": {"pattern": "(^|/)\\.\\.?(/|$)"}},
+        {"not": {"pattern": "\\u0000"}}
+      ]
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "pulpOutput": {
+      "type": "object",
+      "required": ["kind", "path", "sha256"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["export-toc", "export-metadata", "task-output", "checksum", "other-native-pulp-output"]
+        },
+        "path": {"$ref": "#/$defs/relativePath"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "fileEntry": {
+      "type": "object",
+      "required": ["path", "kind", "sizeBytes", "sha256", "symlink"],
+      "additionalProperties": false,
+      "properties": {
+        "path": {"$ref": "#/$defs/relativePath"},
+        "kind": {
+          "type": "string",
+          "enum": [
+            "pulp-export-artifact",
+            "pulp-export-toc",
+            "pulp-export-metadata",
+            "manifest",
+            "signature",
+            "custody-record",
+            "evidence",
+            "other"
+          ]
+        },
+        "sizeBytes": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "symlink": {"const": false}
+      }
+    },
+    "signedManifest": {
+      "type": "object",
+      "required": [
+        "status",
+        "signaturePath",
+        "signatureType",
+        "algorithm",
+        "signerKeyRef",
+        "verificationProcedureRef"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"const": "signed"},
+        "signaturePath": {"$ref": "#/$defs/relativePath"},
+        "signatureType": {"const": "detached"},
+        "algorithm": {"type": "string", "minLength": 1, "maxLength": 128},
+        "signerKeyRef": {"type": "string", "minLength": 1, "maxLength": 256},
+        "verificationProcedureRef": {"type": "string", "minLength": 1, "maxLength": 256}
+      }
+    },
+    "phase2Waiver": {
+      "type": "object",
+      "required": ["status", "waiver"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {"const": "waived-for-phase-2"},
+        "waiver": {
+          "type": "object",
+          "required": [
+            "waiverId",
+            "approvedByRole",
+            "approvedAt",
+            "expiresAt",
+            "rationale",
+            "compensatingControls",
+            "productionBlocker"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "waiverId": {"type": "string", "pattern": "^[a-zA-Z0-9_.:-]{3,128}$"},
+            "approvedByRole": {"type": "string", "pattern": "^[a-zA-Z0-9_.:-]{3,128}$"},
+            "approvedAt": {"type": "string", "format": "date-time"},
+            "expiresAt": {"type": "string", "format": "date-time"},
+            "rationale": {"type": "string", "minLength": 12, "maxLength": 1024},
+            "compensatingControls": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"type": "string", "minLength": 1, "maxLength": 128},
+              "uniqueItems": true
+            },
+            "productionBlocker": {"const": true}
+          }
+        }
+      }
+    }
+  }
+}

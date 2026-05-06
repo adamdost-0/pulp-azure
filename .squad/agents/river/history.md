@@ -35,3 +35,7 @@ Initial setup complete.
 - 2026-05-06T20:27:01.226+00:00: Drafted `docs/proposals/p2.0-p2.1-validation-gates.md` to make P2.0 command-contract checks and P2.1 manifest/custody controls immediately testable, including mandatory negatives (direction, traversal, checksum, symlink escape, missing export file, high-side egress, signature/waiver failures), Playwright evidence rules, and PR-static vs disconnected e2e lane split.
 
 - 2026-05-06T20:26:13.550+00:00: Scribe: merged your inbox decision into .squad/decisions/decisions.md and recorded orchestration logs.
+- 2026-05-06T20:27:01.226+00:00: Reviewed Wash/Simon P2 outputs and confirmed they are testable with explicit fail-closed controls. Updated `docs/proposals/p2.0-p2.1-validation-gates.md` to align with observed CLI reality (`import-check`/`import` may be baseline-blocked if explicitly gated), and tightened negatives to reject any symlink plus hard-link/special-file cases.
+
+- 2026-05-06T20:27:01.226+00:00: Scribe: merged decision inbox items into .squad/decisions.md (4 files) and created orchestration/session logs.
+- 2026-05-06T20:48:59Z: Validated Pipeline 5 Dependency Audit locally with session-scoped temp paths (runtime forbids /tmp). Confirmed pip-audit surfaces actionable findings (pytest, pygments, requests) and pip-licenses highlights copyleft dependencies (pulp-cli*, pulp-glue*). Found Pipeline 5 SBOM command bug: `cyclonedx-py requirements -i <requirements-file>` fails; corrected form is `cyclonedx-py requirements <requirements-file> -o <output>`.

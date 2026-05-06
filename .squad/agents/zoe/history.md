@@ -40,6 +40,7 @@
 - **2026-05-06T05:33:10.822+00:00**: Phase 2 planning memo created at `docs/proposals/phase-2-planning.md`. Smallest coherent next objective is a local two-side low-to-high Pulp export/import rehearsal with native Pulp exporter/importer, thin transfer manifest, high-side import-check/import/publish, isolated apt validation, and structured evidence. Azure implementation remains gated until this proof passes and product-owner questions on scale, signing, custody, identity, retention, and target high-side platform are answered.
 
 - **2026-05-06T20:19:21.141+00:00**: Prepared Phase 2 planning artifacts for direct main commit/push after confirming the change set was limited to planning docs, Squad histories/decisions, identity state, and Phase 2 skills; validation gate is `git diff --check` plus `harness/local/scripts/validate-static.sh` before push.
+- **2026-05-06T20:27:01.226+00:00**: P2.0/P2.1 architecture gate APPROVED. Wash correctly made the pinned Pulp CLI import gap and export/import path settings hard blockers instead of adding a REST wrapper; Simon kept transfer/custody one-way and Azure-free with explicit user decisions; River made the outputs gateable with positive/negative checks and structured evidence expectations. Follow-up before P2.2: select a validated image+CLI combination that exposes native import-check/import and keep docs index entries current for new gate artifacts.
 
 - **2026-05-06T20:26:13.550+00:00**: CI strategy proposal created at `docs/proposals/ci-strategy.md`. Recommendation: clean up dead scaffold workflows, make `squad-ci.yml` the visible Tier 1 foundation gate, use the sandbox for local-first parity, add scheduled/trusted live Pulp e2e evidence in Tier 2, and defer SBOM/signing/provenance/offline high-side no-egress proof to Tier 3 enterprise trust. Decision written to `.squad/decisions/inbox/zoe-ci-strategy.md`.
 
@@ -49,3 +50,4 @@
 - 2026-05-06T20:19:21.141+00:00: Zoe pushed Phase 2 planning workspace (commit 50923132d...). Handed off to scribe for logging.
 
 - 2026-05-06T20:26:13.550+00:00: Scribe: merged CI inbox items; created orchestration and session logs.
+- 2026-05-06T20:27:01.226+00:00: Scribe: merged decision inbox items into .squad/decisions.md (4 files) and created orchestration/session logs.

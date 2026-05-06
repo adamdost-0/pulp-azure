@@ -23,3 +23,11 @@ Initial setup complete.
 
 - Scribe: merged phase-2 planning inbox into .squad/decisions.md
 - 2026-05-06T20:19:21.141+00:00: Recorded Zoe push, merged inbox, wrote orchestration-log and session log.
+
+- 2026-05-06T20:27:01.226+00:00: Scribe: merged decision inbox items into .squad/decisions.md (4 files) and created orchestration/session logs.
+
+---
+date: "2026-05-06T20:27:01.226+00:00"
+author: "scribe"
+note: "Removed tracked artifact .squad/decisions/decisions.md; canonical decisions retained in .squad/decisions.md"
+---

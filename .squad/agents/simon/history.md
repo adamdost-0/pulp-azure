@@ -161,3 +161,16 @@ Simon owns security, compliance, and AirGap boundary review for a customer accel
 - `.squad/decisions/inbox/simon-p2-transfer-custody.md`
 
 - 2026-05-06T20:26:13.550+00:00: Scribe: merged your inbox decision into .squad/decisions/decisions.md and recorded orchestration logs.
+- 2026-05-06T20:27:01.226+00:00: Scribe: merged decision inbox items into .squad/decisions.md (4 files) and created orchestration/session logs.
+
+### 2026-05-06 — Pipeline 3 Container Build + Scan Local Validation
+
+**Date:** 2026-05-06T20:43:11.234+00:00
+**Status:** VALIDATED_WITH_SECURITY_FINDINGS
+**Scope:** Local validation of container build and Trivy scan feasibility for Pipeline 3 (`harness/sandbox/Dockerfile`)
+
+**Learnings:**
+- Current sandbox Dockerfile uses `FROM python:3.12-slim` without digest pinning; deterministic supply-chain posture requires tag+digest pinning.
+- Local container build works (`docker build` successful), producing ~347MB image with large apt/pip layers that expand attack surface.
+- Trivy is feasible to run locally and can emit both table and SARIF output; scan surfaced HIGH/CRITICAL vulnerabilities in current base/runtime packages.
+- SARIF artifact is valid JSON locally, so CI upload/integration is technically ready once vulnerability gating policy is agreed.

@@ -24,6 +24,8 @@ problem, proposed solution, key decisions, risks, and scope boundaries.
 |---|---|
 | [Solution-As-Code Harness](proposals/pulp-solution-as-code.md) | Declarative solution files, disposable sessions, NAS-backed storage, and Playwright evidence as a first-class output. |
 | [Phase 2 Planning Memo](proposals/phase-2-planning.md) | Local low-to-high export/import rehearsal scope, decisions, gates, sequencing, and delegation plan. |
+| [P2.1 Transfer Manifest and Custody Contract](proposals/p2.1-transfer-manifest-custody.md) | Low-to-high transfer manifest fields, custody controls, fail-closed import preconditions, and open user decisions. |
+| [P2.0 and P2.1 Validation Gate Outline](proposals/p2.0-p2.1-validation-gates.md) | Static and disconnected acceptance checks for the command contract, manifest controls, negative cases, and evidence expectations. |
 
 ## Runbooks
 
@@ -42,6 +44,7 @@ documents.
 
 | Document | Purpose |
 |---|---|
+| [P2.0 Pulp Export/Import Contract](research/p2.0-pulp-export-import-contract.md) | Command-proven Phase 2 baseline for core exporter/importer surface, apt/deb viability, and hard blockers on the selected local image/CLI versions. |
 | [Pulp CLI Deb Deep Dive](reference/pulp-cli-deb-deep-dive.md) | Upstream `pulp-cli-deb` plugin contracts for remote, repository, publication, distribution, content, and export/import implications. |
 | [Pulp CLI Flow Diagram](reference/assets/pulp-cli-flow.svg) | Visual flow of the `pulp-cli` configuration steps. |
 
@@ -58,5 +61,8 @@ For a new contributor:
 4. [Disposable Session Runbook](runbooks/disposable-session.md) — run your first
    local session.
 5. [Apt 0-to-100](runbooks/apt-0-to-100.md) — see the full target flow and gaps.
-6. [Deb Deep Dive](reference/pulp-cli-deb-deep-dive.md) — reference when
+6. [P2.0 Pulp Export/Import Contract](research/p2.0-pulp-export-import-contract.md) — review native export/import blockers before implementation.
+7. [P2.1 Transfer Manifest and Custody Contract](proposals/p2.1-transfer-manifest-custody.md) — review transfer controls and unresolved user decisions.
+8. [P2.0 and P2.1 Validation Gate Outline](proposals/p2.0-p2.1-validation-gates.md) — review acceptance gates and evidence requirements.
+9. [Deb Deep Dive](reference/pulp-cli-deb-deep-dive.md) — reference when
    extending Pulp CLI automation.

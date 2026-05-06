@@ -35,6 +35,7 @@ Initial setup complete.
 * **2026-05-06T05:33:10.822+00:00**: Authored Phase 2 planning memo at `.squad/agents/wash/phase-2-planning-memo.md` defining the next Pulp-native step after local apt sandbox: generic core exporter/importer research, low/high rehearsal sequence, immutable repository version capture, custody manifest handoff, and idempotent create/update semantics with `pulp-cli` retained as the automation boundary.
 * **2026-05-06T05:33:10.822+00:00**: Phase 2 acceptance criteria now explicitly require structured evidence continuity (`evidence/<session-id>/README.md` + `manifest.json` + grouped artifact dirs), one-way low→high boundaries, and deterministic rerun outcomes across export/import/publish validation.
 * **2026-05-06T20:26:13.550+00:00**: Produced `docs/proposals/ci-pipelines.md` with six concrete CI lanes (quality, static, container, e2e, audit, release integrity), including ready-to-implement YAML for Pipelines 1/2/3/5, local command parity, runtime requirements, and L2H transfer-integrity linkage.
+* **2026-05-06T20:43:11.234+00:00**: Local CI dry-run proved Pipeline 2 static validation passes in sandbox when `PULP_STORAGE_ROOT=/workspace/.runtime/pulp-storage` is set, while Pipeline 1 quality gate fails at `shellcheck` (SC2295, SC2016) in `harness/sandbox/scripts/check-p2-export-import-surface.sh`; CI rollout should gate on fixing those shell lint findings.
 
 ## 20260505T000000Z - Verified local pulp CLI
 
@@ -51,3 +52,6 @@ Wash configured apt-get for Pulp and ran an apt-get package pull validation.
 - Scribe: merged phase-2 planning inbox into .squad/decisions.md
 
 - 2026-05-06T20:26:13.550+00:00: Scribe: merged CI inbox items; created orchestration and session logs.
+- **2026-05-06T20:27:01.226+00:00**: P2.0 contract proof on `pulp/pulp:3.21` confirms `pulpcore 3.21.34` + `pulp_deb 2.20.4` expose exporter/export/importer surfaces, but baseline blocks native rehearsal because `ALLOWED_EXPORT_PATHS`/`ALLOWED_IMPORT_PATHS` are empty and pinned `pulp-cli 0.37.1` has no import-check/import verbs despite API endpoints.
+
+- 2026-05-06T20:27:01.226+00:00: Scribe: merged decision inbox items into .squad/decisions.md (4 files) and created orchestration/session logs.

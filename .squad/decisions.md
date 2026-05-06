@@ -220,3 +220,97 @@ topic: "phase-2 validation gates"
 Phase 2 should be treated as validation-complete only when low-side and high-side disposable workflows both pass, export/import manual handoff is rehearsed, high-side apt client consumption is proven, and mandatory negative tests fail in expected controlled ways.
 
 This decision sets structured evidence (`README.md`, `manifest.json`, grouped artifact directories, Playwright captures, and `harness/local/scripts/validate-evidence-structure.sh`) plus 100% line/branch coverage as non-negotiable gates, with CI split into PR-feasible checks and self-hosted/nightly disconnected e2e execution.
+
+
+# Book — P2.1 Manifest & Custody Review
+
+Date: 2026-05-06T20:27:01.226+00:00
+
+Decision: APPROVE (Customer Enablement)
+
+Summary:
+- From the operator/runbook perspective, the P2.1 transfer manifest schema and P2.1 validation gates provide the necessary custody fields, waiver handling, and evidence expectations to write clear operator runbooks for low→high transfers.
+
+Non-blocking follow-ups (owner: Book unless noted):
+- Add a worked example `custody-record.json` and a short custody-hand-off checklist to docs/runbooks/phase-2-manual-transfer-checklist.md (Book).
+- Surface an example `verificationProcedureRef` and waiver approver role in docs/runbooks/phase-2-evidence-review.md (Book).
+- Link `custody-record` and `transfer-manifest.schema.json` in runbooks and reference the sample custody record (Implementer: ensure schema alignment and add example file).
+
+Rationale:
+- The manifest schema includes custodyRecordPath, signing/waiver options, and evidenceRefs; the validation gates document maps required negatives and evidence capture obligations. This is sufficient for operator-facing runbooks once the above sample artifacts are provided.
+
+Next steps:
+- Book to draft the three runbooks listed in phase-2-planning and include the custody examples as requested.
+- Implementer to add sample custody-record file in the repo and confirm schema compatibility.
+
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+
+
+---
+date: "2026-05-06T20:27:01.226+00:00"
+author: "river"
+topic: "p2 artifact validation review"
+---
+
+# Decision: Approve P2.0/P2.1 artifacts for validation readiness
+
+River approves the current P2.0/P2.1 artifacts from a validation perspective.
+
+Rationale:
+- Wash output is testable and explicitly captures baseline command-surface blockers (`import-check`/`import` absent in pinned CLI) with reproducible probe evidence.
+- Simon output is testable and fail-closed, with schema-backed manifest controls, custody contract requirements, and waiver/audit semantics.
+- Validation-gate outline now aligns to the baseline blocker model and explicit filesystem negative cases (symlink, hard-link/special-file rejection).
+
+Non-blocking follow-ups:
+1. Add executable fixture tests that assert `baseline-blocked` classification for missing import verbs and fail when undocumented.
+2. Add negative fixtures for hard-link and special-file rejection in manifest pre-import validation.
+
+
+---
+date: "2026-05-06T20:27:01.226+00:00"
+author: "wash"
+topic: "p2 export/import contract baseline gate"
+---
+
+# Decision: Gate Phase 2 import rehearsal on baseline image+CLI compatibility
+
+For the selected local baseline (`pulp/pulp:3.21` + `pulp-cli 0.37.1`), we can
+use native `pulp-cli` for exporter/exporter-run and importer resource
+create/update, but we cannot complete native import rehearsal yet.
+
+Hard blockers observed:
+
+1. `ALLOWED_EXPORT_PATHS` and `ALLOWED_IMPORT_PATHS` are empty by default in the
+   disposable image settings, so exporter path validation fails closed.
+2. Import endpoints exist in Pulp OpenAPI, but pinned `pulp-cli 0.37.1` does
+   not expose `import-check` / `import` command verbs.
+
+Implication:
+
+- P2.2/P2.3 low→high implementation should require an explicit preflight gate:
+  approved export/import path settings plus an image+CLI combination that
+  exposes native import-check/import commands.
+
+
+---
+date: "2026-05-06T20:27:01.226+00:00"
+author: "zoe"
+topic: "p2.0 p2.1 architecture gate"
+verdict: "approve"
+---
+
+# Decision: Approve P2.0 and P2.1 architecture gate
+
+P2.0 and P2.1 are approved for scope and architecture. The approved path is still a local low-to-high rehearsal around native Pulp behavior, not an Azure build and not a custom REST wrapper.
+
+Blocking implementation preconditions remain explicit:
+
+- P2.2/P2.3 cannot claim import readiness until the team selects a validated image and `pulp-cli` combination that exposes native import-check/import commands.
+- Low-side and high-side runs must preflight allowed export/import paths before creating exporters or importers.
+- Transfer validation must fail closed on direction, path, size, SHA-256, symlink, signature or waiver, custody, public high-side egress, and evidence-index failures.
+- Open user decisions for custody authority, signing authority, high-side private image source, no-egress evidence, retention, RBAC, and ecosystem scope remain blockers for production or Azure architecture freeze.
+
+Non-blocking follow-ups:
+
+- Keep the documentation index synchronized when Phase 2 gate artifacts are added.
+- Convert the custody record contract into an executable schema only if P2.2/P2.3 need custody records as machine-validated inputs rather than reviewer-only evidence.
